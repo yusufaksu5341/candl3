@@ -115,26 +115,31 @@ type DesignState = DesignSnapshot & {
   removeEffect: (id: string) => void
   applySnapshot: (s: DesignSnapshot) => void
   applyStyle: (theme: Theme, background: Background, effects: Effect[]) => void
+  /** Restores the starting widgets and layout but keeps the look. */
+  resetLayout: () => void
 }
 
 export const uid = () => Math.random().toString(36).slice(2, 9)
 
 export const DEFAULT_DESIGN: DesignSnapshot = {
+  // Starting layout: fills exactly one screen (24 x 24) on desktop.
   widgets: [
     { id: 'lib', type: 'library', settings: {} },
     { id: 'disc', type: 'circle', settings: {} },
-    { id: 'spec', type: 'bars', settings: {} },
     { id: 'play', type: 'player', settings: {} },
+    { id: 'spec', type: 'bars', settings: {} },
+    { id: 'clock', type: 'clock', settings: { size: 40, date: true } },
     { id: 'queue', type: 'queue', settings: {} },
     { id: 'eq', type: 'equalizer', settings: {} },
   ],
   layout: [
-    { i: 'lib', x: 0, y: 0, w: 7, h: 22 },
-    { i: 'disc', x: 7, y: 0, w: 10, h: 12 },
-    { i: 'spec', x: 7, y: 12, w: 10, h: 5 },
-    { i: 'play', x: 7, y: 17, w: 10, h: 5 },
-    { i: 'queue', x: 17, y: 0, w: 7, h: 11 },
-    { i: 'eq', x: 17, y: 11, w: 7, h: 11 },
+    { i: 'lib', x: 0, y: 0, w: 6, h: 24 },
+    { i: 'disc', x: 6, y: 0, w: 12, h: 14 },
+    { i: 'play', x: 6, y: 14, w: 12, h: 6 },
+    { i: 'spec', x: 6, y: 20, w: 12, h: 4 },
+    { i: 'clock', x: 18, y: 0, w: 6, h: 4 },
+    { i: 'queue', x: 18, y: 4, w: 6, h: 10 },
+    { i: 'eq', x: 18, y: 14, w: 6, h: 10 },
   ],
   theme: {
     accent: '#8b7bff',
@@ -314,6 +319,11 @@ export const useDesign = create<DesignState>()(
             page: { screens: Math.max(s.page?.screens ?? 1, screensFor(s.layout)) },
             selected: undefined,
           })
+        },
+        resetLayout: () => {
+          record()
+          const d = structuredClone(DEFAULT_DESIGN)
+          set({ widgets: d.widgets, layout: d.layout, page: d.page, selected: undefined })
         },
         applyStyle: (theme, background, effects) => {
           record()

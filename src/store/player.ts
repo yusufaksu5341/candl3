@@ -35,6 +35,8 @@ type PlayerState = {
   cycleRepeat: () => void
   setEq: (index: number, gain: number) => void
   setEqAll: (gains: number[]) => void
+  /** Stops playback and restores volume, EQ, shuffle and repeat defaults. */
+  resetAll: () => void
 }
 
 const audio = engine.audio
@@ -146,6 +148,12 @@ export const usePlayer = create<PlayerState>()(
         setEqAll: (gains) => {
           gains.forEach((g, i) => engine.setEqGain(i, g))
           set({ eq: [...gains] })
+        },
+        resetAll: () => {
+          get().clearQueue()
+          get().setEqAll(EQ_BANDS.map(() => 0))
+          get().setVolume(0.8)
+          set({ shuffle: false, repeat: 'off', error: undefined })
         },
       }
     },

@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Download, Eye, EyeOff, Minimize2, Plus, RotateCcw, Trash2, Upload } from 'lucide-react'
+import { Download, Eye, EyeOff, LayoutGrid, Minimize2, Plus, RotateCcw, Trash2, Upload } from 'lucide-react'
 import { COMMON_EFFECT_FIELDS, EFFECTS, effectDef, WIDGET_ANIMS } from '../effects'
 import { useT } from '../i18n'
 import type { Field } from '../lib/fields'
@@ -7,6 +7,7 @@ import { opts } from '../lib/fields'
 import { saveBlob } from '../lib/blobStore'
 import { FONTS, STYLE_PRESETS } from '../lib/presets'
 import { DEFAULT_DESIGN, snapshot, uid, useDesign } from '../store/design'
+import { usePlayer } from '../store/player'
 import type { DesignSnapshot } from '../store/design'
 import { BG_UPLOAD_KEY, BG_UPLOADED_EVENT } from './Backdrop'
 import FieldForm from './FieldForm'
@@ -145,7 +146,7 @@ function isSnapshot(v: unknown): v is DesignSnapshot {
 
 export function PresetsTab() {
   const t = useT()
-  const { applySnapshot, applyStyle } = useDesign.getState()
+  const { applySnapshot, applyStyle, resetLayout } = useDesign.getState()
   const file = useRef<HTMLInputElement>(null)
 
   const exportJson = () => {
@@ -197,7 +198,14 @@ export function PresetsTab() {
       </div>
       <h4>{t('presets.reset')}</h4>
       <div className="btn-row" style={{ marginTop: 0 }}>
-        <button className="danger" onClick={() => { if (confirm(t('presets.confirmReset'))) applySnapshot(structuredClone(DEFAULT_DESIGN)) }}>
+        <button onClick={() => { if (confirm(t('presets.confirmLayout'))) resetLayout() }}>
+          <LayoutGrid size={14} /> {t('presets.resetLayout')}
+        </button>
+        <button className="danger" onClick={() => {
+          if (!confirm(t('presets.confirmReset'))) return
+          applySnapshot(structuredClone(DEFAULT_DESIGN))
+          usePlayer.getState().resetAll()
+        }}>
           <RotateCcw size={14} /> {t('presets.resetBtn')}
         </button>
       </div>
