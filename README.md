@@ -2,16 +2,41 @@
 
 Tamamen özelleştirilebilir bir müzik dinleme sayfası. Müzikler [Internet Archive](https://archive.org) üzerinden çekilir; kullanıcı sayfasını araçlar (widget), arka planlar ve animasyonlarla dilediği gibi tasarlar.
 
-## Özellikler
+Internet Archive ses dosyalarını CORS izniyle sunduğu için ses Web Audio API'den geçer: ekolayzer ve görselleştiriciler gerçek ses verisiyle çalışır.
 
-- Internet Archive'de arama, türe göre keşif, albüm/parça listeleri
-- Kendi MP3 dosyalarını ekleyebilme
-- Sürükle-bırak ve yeniden boyutlandırılabilir araçlar: oynatıcı, şimdi çalan, kütüphane, sıra, 10 bantlı ekolayzer, görselleştiriciler, plak, saat, notlar ve daha fazlası
-- Her aracın kendi ayarları (renk, stil, çubuk sayısı vb.)
-- Arka plan: düz renk, gradyan, görsel/video bağlantısı veya dosya yükleme
-- Açılıp kapatılabilen animasyon katmanları: parçacıklar, kar, yağmur, yıldızlar, müziğe tepki veren efektler
-- Tema: vurgu rengi, yazı tipi, köşe yuvarlaklığı, cam bulanıklığı, panel saydamlığı
-- Hazır temalar, tasarımı JSON olarak dışa/içe aktarma
+## Kullanım
+
+- **Düzenle**: Araçları sürükle, kenarlarından boyutlandır, çoğalt veya kaldır. Bir araca tıklayınca ayarları açılır.
+- **Özelleştir**: Araç ekle, tema, arka plan, animasyonlar ve hazır stiller.
+- Tasarım tarayıcıda otomatik kaydedilir; JSON olarak dışa/içe aktarılabilir.
+
+## Araçlar (15)
+
+| Araç | Açıklama |
+|---|---|
+| Oynatıcı | Oynat/duraklat, önceki/sonraki, karıştır, tekrar, ilerleme, ses |
+| Şimdi Çalan | Kapak, şarkı, sanatçı, albüm |
+| Kütüphane | Internet Archive araması, tür etiketleri, albümler; kendi MP3 dosyalarını ekleme |
+| Çalma Sırası | Sıradaki parçalar |
+| Ekolayzer | 10 bant, hazır ayarlar (Bass Boost, Vokal, Rock, Lo-fi…) |
+| Müzik Dairesi | Kapağın etrafında dönen ritim halkası (çubuk / dalga) |
+| Spektrum | Frekans çubukları, ayna, renk geçişi, tepe çizgileri |
+| Dalga Formu | Osiloskop |
+| Plak | Dönen plak, iğne kolu, basa tepki |
+| VU Metre | Ses seviyesi göstergesi |
+| Saat, Metin, Görsel, Notlar | Sayfayı kişiselleştirmek için |
+
+Her aracın ortak ayarları: panel arka planı, iç boşluk, animasyon (süzülme, ritimle büyüme, ritimle parlama, sallanma).
+
+## Animasyon katmanları (10)
+
+Yıldızlar, parçacıklar, kar, yağmur, baloncuklar, ateş böcekleri, kayan yıldızlar, ritim halkaları, aurora, alt spektrum. Her biri renk, yoğunluk, hız, görünürlük ve müziğe tepki ayarına sahiptir; üst üste eklenebilir.
+
+## Tema ve arka plan
+
+- Vurgu ve yazı rengi, 12 yazı tipi, panel rengi/saydamlığı, cam bulanıklığı, köşe yuvarlaklığı, aralık, kenarlık, gölge
+- Arka plan: düz renk, (hareketli) renk geçişi, görsel/GIF veya video bağlantısı, dosya yükleme; karartma, bulanıklık, ritimle yakınlaşma
+- 8 hazır stil: Gece Moru, Neon Şehir, Lo-fi Oda, Kâğıt, Okyanus, Kar Gecesi, Retro Arcade, Minimal Siyah
 
 ## Çalıştırma
 
@@ -22,4 +47,4 @@ npm run dev
 
 ## Teknolojiler
 
-React, TypeScript, Vite, Zustand, react-grid-layout, Web Audio API
+React, TypeScript, Vite, Zustand, react-grid-layout, Web Audio API, Internet Archive API
