@@ -1,0 +1,43 @@
+# candl3 — Apache settings for InfinityFree (or any Apache host).
+# Upload this together with the rest of dist/ into htdocs/.
+# Install the SSL certificate BEFORE uploading, otherwise visitors are
+# redirected to an HTTPS address that still shows a certificate warning.
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Force HTTPS. The X-Forwarded-Proto check keeps this from looping behind
+  # proxies such as Cloudflare.
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Use the bare domain: www.candl3.com -> candl3.com
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Browsers remember to use HTTPS only. Uncomment once HTTPS works reliably.
+  # Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Hashed build files never change, so they can be cached for a long time.
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  # Always fetch the latest page so new deploys show up immediately.
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
