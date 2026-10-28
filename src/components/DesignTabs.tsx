@@ -88,7 +88,6 @@ export function EffectsTab() {
   const { addEffect, updateEffect, removeEffect } = useDesign.getState()
   return (
     <div className="tab">
-      <p className="muted small">Animasyon katmanları arka planın üstünde, araçların arkasında çalışır. İstediğin kadarını üst üste ekleyebilirsin.</p>
       {effects.length > 0 && <h4>Sayfandakiler</h4>}
       {effects.map((e) => {
         const def = effectDef(e.type)
@@ -117,10 +116,7 @@ export function EffectsTab() {
         {EFFECTS.map((d) => (
           <button key={d.type} className="widget-card" onClick={() => addEffect(d.type, {})}>
             <d.icon size={18} />
-            <span>
-              <strong>{d.name}</strong>
-              <small className="muted">{d.description}</small>
-            </span>
+            <span><strong>{d.name}</strong></span>
             <Plus size={16} className="muted" />
           </button>
         ))}

@@ -252,7 +252,6 @@ function Floor({ settings: s }: { settings: S }) {
 export type EffectDef = {
   type: string
   name: string
-  description: string
   icon: LucideIcon
   defaults: Record<string, unknown>
   fields: Field[]
@@ -268,26 +267,26 @@ const react: Field = { key: 'react', label: 'Müziğe tepki', type: 'toggle' }
 export const COMMON_EFFECT_FIELDS: Field[] = [{ key: 'opacity', label: 'Görünürlük', type: 'range', min: 0.05, max: 1, step: 0.05 }]
 
 export const EFFECTS: EffectDef[] = [
-  { type: 'stars', name: 'Yıldızlar', description: 'Parıldayan yıldızlar', icon: Star, component: Stars,
+  { type: 'stars', name: 'Yıldızlar', icon: Star, component: Stars,
     defaults: { ...base, color: '#ffffff', density: 120, opacity: 0.6 }, fields: [color, density(400), speed, react] },
-  { type: 'particles', name: 'Parçacıklar', description: 'Yükselen ışık noktaları', icon: Sparkles, component: Particles,
+  { type: 'particles', name: 'Parçacıklar', icon: Sparkles, component: Particles,
     defaults: { ...base, density: 70, links: true }, fields: [color, density(200), speed, { key: 'links', label: 'Bağlantı çizgileri', type: 'toggle' }, react] },
-  { type: 'snow', name: 'Kar', description: 'Yavaşça düşen kar taneleri', icon: Snowflake, component: Snow,
+  { type: 'snow', name: 'Kar', icon: Snowflake, component: Snow,
     defaults: { ...base, color: '#ffffff', density: 140, size: 1, react: false }, fields: [color, density(400), speed, { key: 'size', label: 'Tane boyutu', type: 'range', min: 0.5, max: 3, step: 0.1 }, react] },
-  { type: 'rain', name: 'Yağmur', description: 'Yağmur damlaları', icon: CloudRain, component: Rain,
+  { type: 'rain', name: 'Yağmur', icon: CloudRain, component: Rain,
     defaults: { ...base, color: '#a8c5ff', density: 160, angle: 10, opacity: 0.6, react: false }, fields: [color, density(500), speed, { key: 'angle', label: 'Açı', type: 'range', min: -40, max: 40 }] },
-  { type: 'bubbles', name: 'Baloncuklar', description: 'Yükselen baloncuklar', icon: Bubbles, component: BubblesFx,
+  { type: 'bubbles', name: 'Baloncuklar', icon: Bubbles, component: BubblesFx,
     defaults: { ...base, density: 40 }, fields: [color, density(120), speed, react] },
-  { type: 'fireflies', name: 'Ateş Böcekleri', description: 'Parlayıp sönen ışıklar', icon: Flame, component: Fireflies,
+  { type: 'fireflies', name: 'Ateş Böcekleri', icon: Flame, component: Fireflies,
     defaults: { ...base, color: '#ffd166', density: 45 }, fields: [color, density(150), speed, react] },
-  { type: 'meteors', name: 'Kayan Yıldızlar', description: 'Gökyüzünden kayan yıldızlar', icon: Zap, component: Meteors,
+  { type: 'meteors', name: 'Kayan Yıldızlar', icon: Zap, component: Meteors,
     defaults: { ...base, color: '#ffffff', density: 6, react: false }, fields: [color, density(30), speed] },
-  { type: 'rings', name: 'Ritim Halkaları', description: 'Baslarda merkezden yayılan halkalar', icon: Orbit, component: Rings,
+  { type: 'rings', name: 'Ritim Halkaları', icon: Orbit, component: Rings,
     defaults: { ...base, sensitivity: 0.5, opacity: 0.6 }, fields: [color, speed, { key: 'sensitivity', label: 'Hassasiyet', type: 'range', min: 0, max: 1, step: 0.05 }] },
-  { type: 'aurora', name: 'Aurora', description: 'Hareketli renkli ışık bulutları', icon: Rainbow, component: Aurora,
+  { type: 'aurora', name: 'Aurora', icon: Rainbow, component: Aurora,
     defaults: { ...base, color2: '#00d4ff', color3: '#ff6ec7', opacity: 0.35 }, fields: [
       { key: 'color', label: 'Renk 1', type: 'color' }, { key: 'color2', label: 'Renk 2', type: 'color' }, { key: 'color3', label: 'Renk 3', type: 'color' }, speed, react] },
-  { type: 'floor', name: 'Alt Spektrum', description: 'Ekranın altında müzikle dans eden çubuklar', icon: Waves, component: Floor,
+  { type: 'floor', name: 'Alt Spektrum', icon: Waves, component: Floor,
     defaults: { ...base, density: 64, height: 0.25, opacity: 0.5 }, fields: [color, { key: 'density', label: 'Çubuk sayısı', type: 'range', min: 16, max: 160 }, { key: 'height', label: 'Yükseklik', type: 'range', min: 0.05, max: 0.8, step: 0.05 }] },
 ]
 
