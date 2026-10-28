@@ -346,3 +346,5 @@ body.no-shadow .widget.has-panel { box-shadow: none; }
   .anim-float, .anim-tilt, .bg-layer.animated { animation: none !important; }
   .anim-pulse, .bg-layer.beat-zoom { transform: none !important; }
 }
+
+.crash { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }

@@ -76,7 +76,12 @@ export function BackgroundTab() {
 
   const onFile = async (f?: File) => {
     if (!f) return
-    await saveBlob(BG_UPLOAD_KEY, f)
+    try {
+      await saveBlob(BG_UPLOAD_KEY, f)
+    } catch {
+      alert(t('bg.uploadFailed'))
+      return
+    }
     setBg({ type: 'upload', uploadKind: f.type.startsWith('video') ? 'video' : 'image' })
     window.dispatchEvent(new Event(BG_UPLOADED_EVENT))
   }

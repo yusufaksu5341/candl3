@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import { ArrowDown, ArrowUp, Copy, Settings2, Trash2 } from 'lucide-react'
 import { useT } from '../i18n'
+import ErrorBoundary from './ErrorBoundary'
 import { useIsMobile } from '../lib/media'
 import { COLS, maxRows, mobileOrdered, ROWS_PER_SCREEN, useDesign } from '../store/design'
 import type { WidgetInstance } from '../store/design'
@@ -37,7 +38,7 @@ function WidgetFrame({ w, mobile }: { w: WidgetInstance; mobile?: boolean }) {
   return (
     <div className={cls} onPointerDown={() => editMode && selectWidget(w.id)}>
       <div className="widget-body" style={{ padding: settings.padding }}>
-        <Comp id={w.id} settings={settings} />
+        <ErrorBoundary><Comp id={w.id} settings={settings} /></ErrorBoundary>
       </div>
       {editMode && (
         <div className="widget-tools no-drag">

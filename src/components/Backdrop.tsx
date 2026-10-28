@@ -14,11 +14,11 @@ function useUploadUrl(enabled: boolean, version: number) {
     if (!enabled) return
     let obj: string | undefined
     let alive = true
-    void loadBlob(BG_UPLOAD_KEY).then((b) => {
+    loadBlob(BG_UPLOAD_KEY).then((b) => {
       if (!alive || !b) return
       obj = URL.createObjectURL(b)
       setUrl(obj)
-    })
+    }).catch(() => { /* storage unavailable (e.g. private mode): fall back to the color */ })
     return () => { alive = false; if (obj) URL.revokeObjectURL(obj) }
   }, [enabled, version])
   return url

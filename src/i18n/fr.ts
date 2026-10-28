@@ -183,6 +183,7 @@ export const fr: Dict = {
   'bg.fallback': 'Couleur de secours',
   'bg.videoUrl': 'Lien vidéo (.mp4 / .webm)',
   'bg.pick': 'Choisir une image, un GIF ou une vidéo',
+  'bg.uploadFailed': 'Impossible d’enregistrer le fichier dans ce navigateur.',
   'bg.effects': 'Effets',
   'bg.dim': 'Assombrir',
   'bg.blur': 'Flou',
@@ -240,6 +241,11 @@ export const fr: Dict = {
 
   'b.addImage': 'Ajoute un lien d’image dans les réglages',
   'b.notes': 'Écris tes notes ici…',
+
+  'error.widget': 'Ce widget a rencontré un problème.',
+  'error.retry': 'Réessayer',
+  'error.app': 'Un problème est survenu au chargement de la page.',
+  'error.reload': 'Recharger',
 
   'eq.custom': 'Personnalisé',
   'eq.flat': 'Neutre',

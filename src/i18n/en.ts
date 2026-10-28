@@ -181,6 +181,7 @@ export const en = {
   'bg.fallback': 'Fallback color',
   'bg.videoUrl': 'Video link (.mp4 / .webm)',
   'bg.pick': 'Choose image, GIF or video',
+  'bg.uploadFailed': 'Could not save the file in this browser.',
   'bg.effects': 'Effects',
   'bg.dim': 'Darken',
   'bg.blur': 'Blur',
@@ -238,6 +239,11 @@ export const en = {
 
   'b.addImage': 'Add an image link in the settings',
   'b.notes': 'Write your notes here…',
+
+  'error.widget': 'This widget ran into a problem.',
+  'error.retry': 'Try again',
+  'error.app': 'Something went wrong while loading the page.',
+  'error.reload': 'Reload',
 
   'eq.custom': 'Custom',
   'eq.flat': 'Flat',

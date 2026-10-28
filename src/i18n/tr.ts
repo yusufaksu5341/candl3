@@ -183,6 +183,7 @@ export const tr: Dict = {
   'bg.fallback': 'Yedek renk',
   'bg.videoUrl': 'Video bağlantısı (.mp4 / .webm)',
   'bg.pick': 'Görsel, GIF veya video seç',
+  'bg.uploadFailed': 'Dosya bu tarayıcıda kaydedilemedi.',
   'bg.effects': 'Efektler',
   'bg.dim': 'Karartma',
   'bg.blur': 'Bulanıklık',
@@ -240,6 +241,11 @@ export const tr: Dict = {
 
   'b.addImage': 'Ayarlardan bir görsel bağlantısı ekle',
   'b.notes': 'Notlarını buraya yaz…',
+
+  'error.widget': 'Bu araçta bir sorun oluştu.',
+  'error.retry': 'Tekrar dene',
+  'error.app': 'Sayfa yüklenirken bir sorun oluştu.',
+  'error.reload': 'Yenile',
 
   'eq.custom': 'Özel',
   'eq.flat': 'Düz',
