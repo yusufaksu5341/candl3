@@ -50,13 +50,23 @@ npm run dev
 
 ## Canlıya alma
 
-Proje statik bir sitedir: `npm run build` komutu `dist/` klasörünü üretir ve bu klasör herhangi bir statik barındırmaya yüklenebilir. Dosya yolları göreli olduğu için site hem alan adının kökünde hem de alt klasörde çalışır.
+Canlı adres: **https://candl3.com** (InfinityFree).
 
-**GitHub Pages (hazır):** `main` dalına her push'ta `.github/workflows/deploy.yml` siteyi derleyip yayınlar. İlk kez açmak için depoda *Settings → Pages → Build and deployment → Source* alanını **GitHub Actions** yap. Site `https://yusufaksu5341.github.io/Koztech-Music/` adresinde yayınlanır.
+`npm run build` komutu `dist/` klasörünü üretir. Site statiktir; dosya yolları göreli olduğu için her statik barındırmada çalışır.
 
-**Vercel / Netlify:** Depoyu içe aktar; Vite otomatik tanınır (build komutu `npm run build`, çıktı klasörü `dist`).
+### InfinityFree'ye yükleme
 
-**Kendi alan adın:** Barındırma panelinden alan adını bağla. Paylaşım önizlemesi için `index.html` içindeki `og:image` değerini tam adresle (`https://alanadin.com/icon-512.png`) değiştir.
+1. **Önce SSL:** InfinityFree Client Area → hesabın → *SSL Certificates* bölümünden `candl3.com` ve `www.candl3.com` için ücretsiz sertifika iste, doğrulama için istenen CNAME kayıtlarını ekle, sertifika çıkınca hesaba kur (*Install*). `https://candl3.com` adresinin uyarısız açıldığını kontrol et.
+2. `npm run build` çalıştır.
+3. `dist/` klasörünün **içindekileri** (gizli `.htaccess` dosyası dahil) File Manager veya FTP ile `htdocs/` klasörüne yükle. Eski `index2.html` / varsayılan dosyaları sil.
+4. `.htaccess` tüm ziyaretçileri otomatik olarak `https://candl3.com` adresine yönlendirir.
+
+Sertifika süresi dolmadan önce panelden yenilenmelidir. HTTPS sorunsuz çalışmaya başladıktan sonra `.htaccess` içindeki `Strict-Transport-Security` satırının başındaki `#` kaldırılabilir.
+
+### Diğer seçenekler
+
+- **GitHub Pages:** *Settings → Pages → Source: GitHub Actions* yapıp Actions sekmesinden *Deploy to GitHub Pages* iş akışını elle çalıştır.
+- **Vercel / Netlify:** Depoyu içe aktar; Vite otomatik tanınır (`npm run build`, çıktı `dist`).
 
 Telefonda site "Ana ekrana ekle" ile uygulama gibi açılır; kilit ekranından oynat/duraklat ve şarkı geçişi yapılabilir.
 
