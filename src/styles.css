@@ -230,3 +230,21 @@ body.no-shadow .widget.has-panel { box-shadow: none; }
 .track-row.current .ellipsis:first-child { color: var(--accent); }
 .track-row .num { width: 18px; text-align: right; }
 .track-row .ctl { width: 26px; height: 26px; }
+
+/* ---------- visual widgets ---------- */
+.viz { width: 100%; height: 100%; display: block; }
+.color-pick { display: inline-flex; align-items: center; gap: 8px; }
+.link { border: 0; background: transparent; color: var(--accent); padding: 0; }
+
+.eq { height: 100%; display: flex; flex-direction: column; gap: 10px; }
+.eq-preset {
+  align-self: flex-start; padding: 5px 10px; border-radius: 8px;
+  border: 1px solid rgba(var(--text-rgb), .12); background: rgba(var(--text-rgb), .06);
+}
+.eq-preset option { background: #1b1b23; }
+.eq-bands { flex: 1; display: flex; justify-content: space-between; gap: 4px; min-height: 0; }
+.eq-band { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+.eq-band input[type=range] {
+  writing-mode: vertical-lr; direction: rtl; flex: 1; width: 4px !important; min-height: 40px;
+  background: linear-gradient(to top, var(--accent) var(--pct, 50%), rgba(var(--text-rgb), .15) var(--pct, 50%)) !important;
+}

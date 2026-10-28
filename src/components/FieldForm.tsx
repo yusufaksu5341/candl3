@@ -1,4 +1,5 @@
 import type { Field } from '../lib/fields'
+import { useDesign } from '../store/design'
 
 type Props = {
   fields: Field[]
@@ -7,6 +8,7 @@ type Props = {
 }
 
 export default function FieldForm({ fields, values, onChange }: Props) {
+  const accent = useDesign((s) => s.theme.accent)
   return (
     <div className="form">
       {fields.map((f) => {
@@ -20,10 +22,18 @@ export default function FieldForm({ fields, values, onChange }: Props) {
               </label>
             )
           case 'color':
+            // An empty value means "use the theme accent".
             return (
               <label key={f.key} className="row">
                 <span>{f.label}</span>
-                <input type="color" value={String(v ?? '#ffffff')} onChange={(e) => onChange({ [f.key]: e.target.value })} />
+                <span className="color-pick">
+                  {v ? (
+                    <button type="button" className="link small" onClick={() => onChange({ [f.key]: '' })}>Tema rengi</button>
+                  ) : (
+                    <span className="muted small">tema</span>
+                  )}
+                  <input type="color" value={String(v || accent)} onChange={(e) => onChange({ [f.key]: e.target.value })} />
+                </span>
               </label>
             )
           case 'range':

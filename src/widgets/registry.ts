@@ -1,4 +1,11 @@
-import { Clock, Disc3, Image, Library, ListMusic, PlayCircle, StickyNote, Type } from 'lucide-react'
+import {
+  Activity, AudioLines, CircleDot, Clock, Disc, Disc3, Gauge, Image, Library, ListMusic, PlayCircle,
+  SlidersVertical, StickyNote, Type,
+} from 'lucide-react'
+import {
+  BarsWidget, barsDefaults, CircleWidget, circleDefaults, EqualizerWidget, eqDefaults, VinylWidget, vinylDefaults,
+  VuWidget, vuDefaults, WaveWidget, waveDefaults,
+} from './visual'
 import {
   LibraryWidget, libraryDefaults, NowPlayingWidget, nowPlayingDefaults, PlayerWidget, playerDefaults, QueueWidget, queueDefaults,
 } from './music'
@@ -54,6 +61,70 @@ export const WIDGETS: WidgetDef[] = [
     type: 'queue', name: 'Çalma Sırası', description: 'Sıradaki parçalar', icon: ListMusic,
     size: { w: 7, h: 11 }, minSize: { w: 4, h: 5 }, defaults: queueDefaults, component: QueueWidget,
     fields: [{ key: 'showCovers', label: 'Kapaklar', type: 'toggle' }],
+  },
+  {
+    type: 'equalizer', name: 'Ekolayzer', description: '10 bantlı ekolayzer ve hazır ayarlar', icon: SlidersVertical,
+    size: { w: 7, h: 9 }, minSize: { w: 5, h: 5 }, defaults: eqDefaults, component: EqualizerWidget,
+    fields: [
+      { key: 'showPresets', label: 'Hazır ayarlar', type: 'toggle' },
+      { key: 'showLabels', label: 'Etiketler', type: 'toggle' },
+    ],
+  },
+  {
+    type: 'circle', name: 'Müzik Dairesi', description: 'Kapağın etrafında dönen ritim halkası', icon: CircleDot,
+    size: { w: 10, h: 12 }, minSize: { w: 4, h: 5 }, defaults: circleDefaults, component: CircleWidget,
+    fields: [
+      { key: 'style', label: 'Stil', type: 'select', options: opts(['bars', 'Çubuklar'], ['wave', 'Dalga']) },
+      { key: 'count', label: 'Çubuk sayısı', type: 'range', min: 24, max: 200 },
+      { key: 'color', label: 'Renk 1', type: 'color' },
+      { key: 'color2', label: 'Renk 2', type: 'color' },
+      { key: 'cover', label: 'Ortada kapak', type: 'toggle' },
+      { key: 'rotate', label: 'Dönsün', type: 'toggle' },
+      { key: 'pulse', label: 'Bas ile atsın', type: 'toggle' },
+    ],
+  },
+  {
+    type: 'bars', name: 'Spektrum', description: 'Frekans çubukları', icon: AudioLines,
+    size: { w: 10, h: 5 }, minSize: { w: 3, h: 2 }, defaults: barsDefaults, component: BarsWidget,
+    fields: [
+      { key: 'count', label: 'Çubuk sayısı', type: 'range', min: 8, max: 128 },
+      { key: 'gap', label: 'Aralık', type: 'range', min: 0, max: 10 },
+      { key: 'color', label: 'Renk', type: 'color' },
+      { key: 'gradient', label: 'Renk geçişi', type: 'toggle' },
+      { key: 'color2', label: 'Geçiş rengi', type: 'color' },
+      { key: 'mirror', label: 'Ayna', type: 'toggle' },
+      { key: 'rounded', label: 'Yuvarlak uçlar', type: 'toggle' },
+      { key: 'peaks', label: 'Tepe çizgileri', type: 'toggle' },
+    ],
+  },
+  {
+    type: 'wave', name: 'Dalga Formu', description: 'Osiloskop çizgisi', icon: Activity,
+    size: { w: 10, h: 4 }, minSize: { w: 3, h: 2 }, defaults: waveDefaults, component: WaveWidget,
+    fields: [
+      { key: 'color', label: 'Renk', type: 'color' },
+      { key: 'width', label: 'Kalınlık', type: 'range', min: 1, max: 8 },
+      { key: 'glow', label: 'Parlama', type: 'toggle' },
+      { key: 'fill', label: 'Dolgu', type: 'toggle' },
+    ],
+  },
+  {
+    type: 'vinyl', name: 'Plak', description: 'Dönen plak ve iğne kolu', icon: Disc,
+    size: { w: 8, h: 10 }, minSize: { w: 4, h: 5 }, defaults: vinylDefaults, component: VinylWidget,
+    fields: [
+      { key: 'speed', label: 'Dönüş hızı', type: 'range', min: 0.2, max: 3, step: 0.1 },
+      { key: 'arm', label: 'İğne kolu', type: 'toggle' },
+      { key: 'react', label: 'Basa tepki', type: 'toggle' },
+      { key: 'label', label: 'Etiket rengi (kapak yoksa)', type: 'color' },
+    ],
+  },
+  {
+    type: 'vu', name: 'VU Metre', description: 'Ses seviyesi göstergesi', icon: Gauge,
+    size: { w: 8, h: 3 }, minSize: { w: 2, h: 2 }, defaults: vuDefaults, component: VuWidget,
+    fields: [
+      { key: 'color', label: 'Renk', type: 'color' },
+      { key: 'segments', label: 'Bölüm sayısı', type: 'range', min: 8, max: 48 },
+      { key: 'vertical', label: 'Dikey', type: 'toggle' },
+    ],
   },
   {
     type: 'clock', name: 'Saat', description: 'Saat ve tarih', icon: Clock,
