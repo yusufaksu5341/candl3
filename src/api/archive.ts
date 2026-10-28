@@ -1,3 +1,4 @@
+import { t } from '../i18n'
 import type { Album, Track } from '../types'
 
 const BASE = 'https://archive.org'
@@ -32,12 +33,12 @@ export async function searchAlbums(query: string, opts: { genre?: string; page?:
   params.append('sort[]', 'downloads desc')
 
   const res = await fetch(`${BASE}/advancedsearch.php?${params}`)
-  if (!res.ok) throw new Error(`Arama başarısız (${res.status})`)
+  if (!res.ok) throw new Error(t('m.searchFailed', { status: res.status }))
   const data = await res.json()
   return (data.response?.docs ?? []).map((d: SearchDoc) => ({
     id: d.identifier,
     title: d.title ?? d.identifier,
-    artist: first(d.creator) || 'Bilinmeyen sanatçı',
+    artist: first(d.creator) || t('m.unknownArtist'),
     cover: coverUrl(d.identifier),
     downloads: d.downloads,
   }))
@@ -61,11 +62,11 @@ const MP3_RANK = ['VBR MP3', '320Kbps MP3', '256Kbps MP3', '192Kbps MP3', '128Kb
 
 export async function getAlbumTracks(identifier: string): Promise<Track[]> {
   const res = await fetch(`${BASE}/metadata/${encodeURIComponent(identifier)}`)
-  if (!res.ok) throw new Error(`Albüm yüklenemedi (${res.status})`)
+  if (!res.ok) throw new Error(t('m.albumFailed', { status: res.status }))
   const data = await res.json()
   const meta = data.metadata ?? {}
   const albumTitle: string = first(meta.title) || identifier
-  const albumArtist: string = first(meta.creator) || 'Bilinmeyen sanatçı'
+  const albumArtist: string = first(meta.creator) || t('m.unknownArtist')
   const cover = coverUrl(identifier)
 
   const score = (f: MetaFile) => {

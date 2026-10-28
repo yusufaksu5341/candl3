@@ -2,165 +2,167 @@ import {
   Activity, AudioLines, CircleDot, Clock, Disc, Disc3, Gauge, Image, Library, ListMusic, PlayCircle,
   SlidersVertical, StickyNote, Type,
 } from 'lucide-react'
-import {
-  BarsWidget, barsDefaults, CircleWidget, circleDefaults, EqualizerWidget, eqDefaults, VinylWidget, vinylDefaults,
-  VuWidget, vuDefaults, WaveWidget, waveDefaults,
-} from './visual'
-import {
-  LibraryWidget, libraryDefaults, NowPlayingWidget, nowPlayingDefaults, PlayerWidget, playerDefaults, QueueWidget, queueDefaults,
-} from './music'
 import { opts } from '../lib/fields'
 import type { Field } from '../lib/fields'
 import {
   ClockWidget, clockDefaults, ImageWidget, imageDefaults, NotesWidget, notesDefaults, TextWidget, textDefaults,
 } from './basic'
+import {
+  LibraryWidget, libraryDefaults, NowPlayingWidget, nowPlayingDefaults, PlayerWidget, playerDefaults, QueueWidget, queueDefaults,
+} from './music'
 import type { WidgetDef } from './types'
+import {
+  BarsWidget, barsDefaults, CircleWidget, circleDefaults, EqualizerWidget, eqDefaults, VinylWidget, vinylDefaults,
+  VuWidget, vuDefaults, WaveWidget, waveDefaults,
+} from './visual'
 
-/** Settings every widget has, regardless of type. */
+/** Settings every widget has, regardless of type. Labels are i18n keys. */
 export const COMMON_DEFAULTS = { panel: true, anim: 'theme', padding: 14 }
 
 export const COMMON_FIELDS: Field[] = [
-  { key: 'panel', label: 'Panel arka planı', type: 'toggle' },
-  { key: 'padding', label: 'İç boşluk', type: 'range', min: 0, max: 40 },
+  { key: 'panel', label: 'f.panel', type: 'toggle' },
+  { key: 'padding', label: 'f.padding', type: 'range', min: 0, max: 40 },
   {
-    key: 'anim', label: 'Animasyon', type: 'select',
-    options: opts(['theme', 'Temaya göre'], ['none', 'Yok'], ['float', 'Süzülme'], ['pulse', 'Ritimle büyüme'], ['glow', 'Ritimle parlama'], ['tilt', 'Sallanma']),
+    key: 'anim', label: 'f.anim', type: 'select',
+    options: opts(['theme', 'anim.theme'], ['none', 'anim.none'], ['float', 'anim.float'], ['pulse', 'anim.pulse'], ['glow', 'anim.glow'], ['tilt', 'anim.tilt']),
   },
 ]
 
+const WEIGHTS = opts(['300', 'opt.thin'], ['500', 'opt.normal'], ['700', 'opt.bold'], ['900', 'opt.black'])
+
 export const WIDGETS: WidgetDef[] = [
   {
-    type: 'player', name: 'Oynatıcı', description: 'Oynat, atla, ilerleme ve ses', icon: PlayCircle,
+    type: 'player', icon: PlayCircle,
     size: { w: 10, h: 5 }, minSize: { w: 5, h: 3 }, defaults: playerDefaults, component: PlayerWidget,
     fields: [
-      { key: 'showTrack', label: 'Şarkı bilgisi', type: 'toggle' },
-      { key: 'showVolume', label: 'Ses kontrolü', type: 'toggle' },
-      { key: 'showExtras', label: 'Karıştır / tekrar', type: 'toggle' },
-      { key: 'big', label: 'Büyük butonlar', type: 'toggle' },
+      { key: 'showTrack', label: 'f.showTrack', type: 'toggle' },
+      { key: 'showVolume', label: 'f.showVolume', type: 'toggle' },
+      { key: 'showExtras', label: 'f.showExtras', type: 'toggle' },
+      { key: 'big', label: 'f.big', type: 'toggle' },
     ],
   },
   {
-    type: 'nowplaying', name: 'Şimdi Çalan', description: 'Kapak, şarkı ve sanatçı', icon: Disc3,
+    type: 'nowplaying', icon: Disc3,
     size: { w: 7, h: 10 }, defaults: nowPlayingDefaults, component: NowPlayingWidget,
     fields: [
-      { key: 'showCover', label: 'Kapak', type: 'toggle' },
-      { key: 'round', label: 'Yuvarlak kapak', type: 'toggle' },
-      { key: 'align', label: 'Yerleşim', type: 'select', options: opts(['center', 'Dikey'], ['row', 'Yatay']) },
-      { key: 'titleSize', label: 'Başlık boyutu', type: 'range', min: 12, max: 48 },
+      { key: 'showCover', label: 'f.showCover', type: 'toggle' },
+      { key: 'round', label: 'f.round', type: 'toggle' },
+      { key: 'align', label: 'f.layout', type: 'select', options: opts(['center', 'opt.vertical'], ['row', 'opt.horizontal']) },
+      { key: 'titleSize', label: 'f.titleSize', type: 'range', min: 12, max: 48 },
     ],
   },
   {
-    type: 'library', name: 'Kütüphane', description: 'Internet Archive araması ve kendi dosyaların', icon: Library,
+    type: 'library', icon: Library,
     size: { w: 7, h: 18 }, minSize: { w: 4, h: 8 }, defaults: libraryDefaults, component: LibraryWidget,
     fields: [
-      { key: 'showGenres', label: 'Tür etiketleri', type: 'toggle' },
-      { key: 'grid', label: 'Izgara görünümü', type: 'toggle' },
+      { key: 'showGenres', label: 'f.showGenres', type: 'toggle' },
+      { key: 'grid', label: 'f.grid', type: 'toggle' },
     ],
   },
   {
-    type: 'queue', name: 'Çalma Sırası', description: 'Sıradaki parçalar', icon: ListMusic,
+    type: 'queue', icon: ListMusic,
     size: { w: 7, h: 11 }, minSize: { w: 4, h: 5 }, defaults: queueDefaults, component: QueueWidget,
-    fields: [{ key: 'showCovers', label: 'Kapaklar', type: 'toggle' }],
+    fields: [{ key: 'showCovers', label: 'f.showCovers', type: 'toggle' }],
   },
   {
-    type: 'equalizer', name: 'Ekolayzer', description: '10 bantlı ekolayzer ve hazır ayarlar', icon: SlidersVertical,
+    type: 'equalizer', icon: SlidersVertical,
     size: { w: 7, h: 9 }, minSize: { w: 5, h: 5 }, defaults: eqDefaults, component: EqualizerWidget,
     fields: [
-      { key: 'showPresets', label: 'Hazır ayarlar', type: 'toggle' },
-      { key: 'showLabels', label: 'Etiketler', type: 'toggle' },
+      { key: 'showPresets', label: 'f.showPresets', type: 'toggle' },
+      { key: 'showLabels', label: 'f.showLabels', type: 'toggle' },
     ],
   },
   {
-    type: 'circle', name: 'Müzik Dairesi', description: 'Kapağın etrafında dönen ritim halkası', icon: CircleDot,
+    type: 'circle', icon: CircleDot,
     size: { w: 10, h: 12 }, minSize: { w: 4, h: 5 }, defaults: circleDefaults, component: CircleWidget,
     fields: [
-      { key: 'style', label: 'Stil', type: 'select', options: opts(['bars', 'Çubuklar'], ['wave', 'Dalga']) },
-      { key: 'count', label: 'Çubuk sayısı', type: 'range', min: 24, max: 200 },
-      { key: 'color', label: 'Renk 1', type: 'color' },
-      { key: 'color2', label: 'Renk 2', type: 'color' },
-      { key: 'cover', label: 'Ortada kapak', type: 'toggle' },
-      { key: 'rotate', label: 'Dönsün', type: 'toggle' },
-      { key: 'pulse', label: 'Bas ile atsın', type: 'toggle' },
+      { key: 'style', label: 'f.style', type: 'select', options: opts(['bars', 'opt.bars'], ['wave', 'opt.wave']) },
+      { key: 'count', label: 'f.count', type: 'range', min: 24, max: 200 },
+      { key: 'color', label: 'f.color1', type: 'color' },
+      { key: 'color2', label: 'f.color2', type: 'color' },
+      { key: 'cover', label: 'f.coverCenter', type: 'toggle' },
+      { key: 'rotate', label: 'f.rotate', type: 'toggle' },
+      { key: 'pulse', label: 'f.pulse', type: 'toggle' },
     ],
   },
   {
-    type: 'bars', name: 'Spektrum', description: 'Frekans çubukları', icon: AudioLines,
+    type: 'bars', icon: AudioLines,
     size: { w: 10, h: 5 }, minSize: { w: 3, h: 2 }, defaults: barsDefaults, component: BarsWidget,
     fields: [
-      { key: 'count', label: 'Çubuk sayısı', type: 'range', min: 8, max: 128 },
-      { key: 'gap', label: 'Aralık', type: 'range', min: 0, max: 10 },
-      { key: 'color', label: 'Renk', type: 'color' },
-      { key: 'gradient', label: 'Renk geçişi', type: 'toggle' },
-      { key: 'color2', label: 'Geçiş rengi', type: 'color' },
-      { key: 'mirror', label: 'Ayna', type: 'toggle' },
-      { key: 'rounded', label: 'Yuvarlak uçlar', type: 'toggle' },
-      { key: 'peaks', label: 'Tepe çizgileri', type: 'toggle' },
+      { key: 'count', label: 'f.count', type: 'range', min: 8, max: 128 },
+      { key: 'gap', label: 'f.gap', type: 'range', min: 0, max: 10 },
+      { key: 'color', label: 'f.color', type: 'color' },
+      { key: 'gradient', label: 'f.gradient', type: 'toggle' },
+      { key: 'color2', label: 'f.gradientColor', type: 'color' },
+      { key: 'mirror', label: 'f.mirror', type: 'toggle' },
+      { key: 'rounded', label: 'f.rounded', type: 'toggle' },
+      { key: 'peaks', label: 'f.peaks', type: 'toggle' },
     ],
   },
   {
-    type: 'wave', name: 'Dalga Formu', description: 'Osiloskop çizgisi', icon: Activity,
+    type: 'wave', icon: Activity,
     size: { w: 10, h: 4 }, minSize: { w: 3, h: 2 }, defaults: waveDefaults, component: WaveWidget,
     fields: [
-      { key: 'color', label: 'Renk', type: 'color' },
-      { key: 'width', label: 'Kalınlık', type: 'range', min: 1, max: 8 },
-      { key: 'glow', label: 'Parlama', type: 'toggle' },
-      { key: 'fill', label: 'Dolgu', type: 'toggle' },
+      { key: 'color', label: 'f.color', type: 'color' },
+      { key: 'width', label: 'f.width', type: 'range', min: 1, max: 8 },
+      { key: 'glow', label: 'f.glow', type: 'toggle' },
+      { key: 'fill', label: 'f.fill', type: 'toggle' },
     ],
   },
   {
-    type: 'vinyl', name: 'Plak', description: 'Dönen plak ve iğne kolu', icon: Disc,
+    type: 'vinyl', icon: Disc,
     size: { w: 8, h: 10 }, minSize: { w: 4, h: 5 }, defaults: vinylDefaults, component: VinylWidget,
     fields: [
-      { key: 'speed', label: 'Dönüş hızı', type: 'range', min: 0.2, max: 3, step: 0.1 },
-      { key: 'arm', label: 'İğne kolu', type: 'toggle' },
-      { key: 'react', label: 'Basa tepki', type: 'toggle' },
-      { key: 'label', label: 'Etiket rengi (kapak yoksa)', type: 'color' },
+      { key: 'speed', label: 'f.speed', type: 'range', min: 0.2, max: 3, step: 0.1 },
+      { key: 'arm', label: 'f.arm', type: 'toggle' },
+      { key: 'react', label: 'f.react', type: 'toggle' },
+      { key: 'label', label: 'f.labelColor', type: 'color' },
     ],
   },
   {
-    type: 'vu', name: 'VU Metre', description: 'Ses seviyesi göstergesi', icon: Gauge,
+    type: 'vu', icon: Gauge,
     size: { w: 8, h: 3 }, minSize: { w: 2, h: 2 }, defaults: vuDefaults, component: VuWidget,
     fields: [
-      { key: 'color', label: 'Renk', type: 'color' },
-      { key: 'segments', label: 'Bölüm sayısı', type: 'range', min: 8, max: 48 },
-      { key: 'vertical', label: 'Dikey', type: 'toggle' },
+      { key: 'color', label: 'f.color', type: 'color' },
+      { key: 'segments', label: 'f.segments', type: 'range', min: 8, max: 48 },
+      { key: 'vertical', label: 'f.vertical', type: 'toggle' },
     ],
   },
   {
-    type: 'clock', name: 'Saat', description: 'Saat ve tarih', icon: Clock,
+    type: 'clock', icon: Clock,
     size: { w: 6, h: 5 }, defaults: clockDefaults, component: ClockWidget,
     fields: [
-      { key: 'hour24', label: '24 saat', type: 'toggle' },
-      { key: 'seconds', label: 'Saniye', type: 'toggle' },
-      { key: 'date', label: 'Tarih', type: 'toggle' },
-      { key: 'size', label: 'Boyut', type: 'range', min: 20, max: 140 },
-      { key: 'weight', label: 'Kalınlık', type: 'select', options: opts(['300', 'İnce'], ['500', 'Normal'], ['700', 'Kalın'], ['900', 'Çok kalın']) },
+      { key: 'hour24', label: 'f.hour24', type: 'toggle' },
+      { key: 'seconds', label: 'f.seconds', type: 'toggle' },
+      { key: 'date', label: 'f.date', type: 'toggle' },
+      { key: 'size', label: 'f.size', type: 'range', min: 20, max: 140 },
+      { key: 'weight', label: 'f.weight', type: 'select', options: WEIGHTS },
     ],
   },
   {
-    type: 'text', name: 'Metin', description: 'Başlık veya serbest yazı', icon: Type,
+    type: 'text', icon: Type,
     size: { w: 8, h: 3 }, defaults: textDefaults, component: TextWidget,
     fields: [
-      { key: 'text', label: 'Yazı', type: 'textarea' },
-      { key: 'size', label: 'Boyut', type: 'range', min: 12, max: 120 },
-      { key: 'weight', label: 'Kalınlık', type: 'select', options: opts(['300', 'İnce'], ['500', 'Normal'], ['700', 'Kalın'], ['900', 'Çok kalın']) },
-      { key: 'align', label: 'Hizalama', type: 'select', options: opts(['left', 'Sol'], ['center', 'Orta'], ['right', 'Sağ']) },
-      { key: 'gradient', label: 'Renk geçişli yazı', type: 'toggle' },
+      { key: 'text', label: 'f.text', type: 'textarea' },
+      { key: 'size', label: 'f.size', type: 'range', min: 12, max: 120 },
+      { key: 'weight', label: 'f.weight', type: 'select', options: WEIGHTS },
+      { key: 'align', label: 'f.align', type: 'select', options: opts(['left', 'opt.left'], ['center', 'opt.center'], ['right', 'opt.right']) },
+      { key: 'gradient', label: 'f.gradientText', type: 'toggle' },
     ],
   },
   {
-    type: 'image', name: 'Görsel', description: 'Bağlantıdan resim veya GIF', icon: Image,
+    type: 'image', icon: Image,
     size: { w: 6, h: 8 }, defaults: imageDefaults, component: ImageWidget,
     fields: [
-      { key: 'url', label: 'Görsel bağlantısı', type: 'text', placeholder: 'https://…' },
-      { key: 'fit', label: 'Sığdırma', type: 'select', options: opts(['cover', 'Doldur'], ['contain', 'Sığdır']) },
-      { key: 'round', label: 'Yuvarlak', type: 'toggle' },
+      { key: 'url', label: 'f.imageUrl', type: 'text', placeholder: 'https://…' },
+      { key: 'fit', label: 'f.fit', type: 'select', options: opts(['cover', 'opt.cover'], ['contain', 'opt.contain']) },
+      { key: 'round', label: 'f.roundImage', type: 'toggle' },
     ],
   },
   {
-    type: 'notes', name: 'Notlar', description: 'Kendine notlar', icon: StickyNote,
+    type: 'notes', icon: StickyNote,
     size: { w: 6, h: 7 }, defaults: notesDefaults, component: NotesWidget,
-    fields: [{ key: 'size', label: 'Yazı boyutu', type: 'range', min: 11, max: 28 }],
+    fields: [{ key: 'size', label: 'f.fontSize', type: 'range', min: 11, max: 28 }],
   },
 ]
 

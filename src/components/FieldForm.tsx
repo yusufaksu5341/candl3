@@ -1,3 +1,4 @@
+import { useT } from '../i18n'
 import type { Field } from '../lib/fields'
 import { useDesign } from '../store/design'
 
@@ -7,17 +8,20 @@ type Props = {
   onChange: (patch: Record<string, unknown>) => void
 }
 
+/** Renders a settings form; field and option labels are i18n keys. */
 export default function FieldForm({ fields, values, onChange }: Props) {
+  const t = useT()
   const accent = useDesign((s) => s.theme.accent)
   return (
     <div className="form">
       {fields.map((f) => {
         const v = values[f.key]
+        const label = t(f.label)
         switch (f.type) {
           case 'toggle':
             return (
               <label key={f.key} className="row toggle">
-                <span>{f.label}</span>
+                <span>{label}</span>
                 <input type="checkbox" checked={Boolean(v)} onChange={(e) => onChange({ [f.key]: e.target.checked })} />
               </label>
             )
@@ -25,12 +29,12 @@ export default function FieldForm({ fields, values, onChange }: Props) {
             // An empty value means "use the theme accent".
             return (
               <label key={f.key} className="row">
-                <span>{f.label}</span>
+                <span>{label}</span>
                 <span className="color-pick">
                   {v ? (
-                    <button type="button" className="link small" onClick={() => onChange({ [f.key]: '' })}>Tema rengi</button>
+                    <button type="button" className="link small" onClick={() => onChange({ [f.key]: '' })}>{t('f.themeColor')}</button>
                   ) : (
-                    <span className="muted small">tema</span>
+                    <span className="muted small">{t('f.theme')}</span>
                   )}
                   <input type="color" value={String(v || accent)} onChange={(e) => onChange({ [f.key]: e.target.value })} />
                 </span>
@@ -39,7 +43,7 @@ export default function FieldForm({ fields, values, onChange }: Props) {
           case 'range':
             return (
               <label key={f.key} className="field">
-                <span className="row"><span>{f.label}</span><span className="muted">{String(v)}</span></span>
+                <span className="row"><span>{label}</span><span className="muted">{String(v)}</span></span>
                 <input
                   type="range" min={f.min} max={f.max} step={f.step ?? 1} value={Number(v ?? f.min)}
                   onChange={(e) => onChange({ [f.key]: Number(e.target.value) })}
@@ -49,23 +53,23 @@ export default function FieldForm({ fields, values, onChange }: Props) {
           case 'select':
             return (
               <label key={f.key} className="field">
-                <span>{f.label}</span>
+                <span>{label}</span>
                 <select value={String(v)} onChange={(e) => onChange({ [f.key]: e.target.value })}>
-                  {f.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  {f.options.map((o) => <option key={o.value} value={o.value}>{t(o.label)}</option>)}
                 </select>
               </label>
             )
           case 'text':
             return (
               <label key={f.key} className="field">
-                <span>{f.label}</span>
+                <span>{label}</span>
                 <input type="text" value={String(v ?? '')} placeholder={f.placeholder} onChange={(e) => onChange({ [f.key]: e.target.value })} />
               </label>
             )
           case 'textarea':
             return (
               <label key={f.key} className="field">
-                <span>{f.label}</span>
+                <span>{label}</span>
                 <textarea rows={3} value={String(v ?? '')} placeholder={f.placeholder} onChange={(e) => onChange({ [f.key]: e.target.value })} />
               </label>
             )

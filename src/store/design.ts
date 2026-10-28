@@ -70,6 +70,7 @@ type DesignState = DesignSnapshot & {
   updateEffect: (id: string, patch: Partial<Effect>) => void
   removeEffect: (id: string) => void
   applySnapshot: (s: DesignSnapshot) => void
+  applyStyle: (theme: Theme, background: Background, effects: Effect[]) => void
 }
 
 export const uid = () => Math.random().toString(36).slice(2, 9)
@@ -178,6 +179,7 @@ export const useDesign = create<DesignState>()(
           effects: s.effects ?? [],
           selected: undefined,
         }),
+      applyStyle: (theme, background, effects) => set({ theme, background, effects }),
     }),
     {
       name: 'koztech-design',

@@ -251,7 +251,6 @@ function Floor({ settings: s }: { settings: S }) {
 
 export type EffectDef = {
   type: string
-  name: string
   icon: LucideIcon
   defaults: Record<string, unknown>
   fields: Field[]
@@ -259,37 +258,37 @@ export type EffectDef = {
 }
 
 const base = { color: '', opacity: 0.8, speed: 1, react: true }
-const color: Field = { key: 'color', label: 'Renk', type: 'color' }
-const density = (max: number): Field => ({ key: 'density', label: 'Yoğunluk', type: 'range', min: 5, max })
-const speed: Field = { key: 'speed', label: 'Hız', type: 'range', min: 0.1, max: 4, step: 0.1 }
-const react: Field = { key: 'react', label: 'Müziğe tepki', type: 'toggle' }
+const color: Field = { key: 'color', label: 'f.color', type: 'color' }
+const density = (max: number): Field => ({ key: 'density', label: 'f.density', type: 'range', min: 5, max })
+const speed: Field = { key: 'speed', label: 'f.speed', type: 'range', min: 0.1, max: 4, step: 0.1 }
+const react: Field = { key: 'react', label: 'f.reactMusic', type: 'toggle' }
 
-export const COMMON_EFFECT_FIELDS: Field[] = [{ key: 'opacity', label: 'Görünürlük', type: 'range', min: 0.05, max: 1, step: 0.05 }]
+export const COMMON_EFFECT_FIELDS: Field[] = [{ key: 'opacity', label: 'f.opacity', type: 'range', min: 0.05, max: 1, step: 0.05 }]
 
 export const EFFECTS: EffectDef[] = [
-  { type: 'stars', name: 'Yıldızlar', icon: Star, component: Stars,
+  { type: 'stars', icon: Star, component: Stars,
     defaults: { ...base, color: '#ffffff', density: 120, opacity: 0.6 }, fields: [color, density(400), speed, react] },
-  { type: 'particles', name: 'Parçacıklar', icon: Sparkles, component: Particles,
-    defaults: { ...base, density: 70, links: true }, fields: [color, density(200), speed, { key: 'links', label: 'Bağlantı çizgileri', type: 'toggle' }, react] },
-  { type: 'snow', name: 'Kar', icon: Snowflake, component: Snow,
-    defaults: { ...base, color: '#ffffff', density: 140, size: 1, react: false }, fields: [color, density(400), speed, { key: 'size', label: 'Tane boyutu', type: 'range', min: 0.5, max: 3, step: 0.1 }, react] },
-  { type: 'rain', name: 'Yağmur', icon: CloudRain, component: Rain,
-    defaults: { ...base, color: '#a8c5ff', density: 160, angle: 10, opacity: 0.6, react: false }, fields: [color, density(500), speed, { key: 'angle', label: 'Açı', type: 'range', min: -40, max: 40 }] },
-  { type: 'bubbles', name: 'Baloncuklar', icon: Bubbles, component: BubblesFx,
+  { type: 'particles', icon: Sparkles, component: Particles,
+    defaults: { ...base, density: 70, links: true }, fields: [color, density(200), speed, { key: 'links', label: 'f.links', type: 'toggle' }, react] },
+  { type: 'snow', icon: Snowflake, component: Snow,
+    defaults: { ...base, color: '#ffffff', density: 140, size: 1, react: false }, fields: [color, density(400), speed, { key: 'size', label: 'f.flakeSize', type: 'range', min: 0.5, max: 3, step: 0.1 }, react] },
+  { type: 'rain', icon: CloudRain, component: Rain,
+    defaults: { ...base, color: '#a8c5ff', density: 160, angle: 10, opacity: 0.6, react: false }, fields: [color, density(500), speed, { key: 'angle', label: 'f.angle', type: 'range', min: -40, max: 40 }] },
+  { type: 'bubbles', icon: Bubbles, component: BubblesFx,
     defaults: { ...base, density: 40 }, fields: [color, density(120), speed, react] },
-  { type: 'fireflies', name: 'Ateş Böcekleri', icon: Flame, component: Fireflies,
+  { type: 'fireflies', icon: Flame, component: Fireflies,
     defaults: { ...base, color: '#ffd166', density: 45 }, fields: [color, density(150), speed, react] },
-  { type: 'meteors', name: 'Kayan Yıldızlar', icon: Zap, component: Meteors,
+  { type: 'meteors', icon: Zap, component: Meteors,
     defaults: { ...base, color: '#ffffff', density: 6, react: false }, fields: [color, density(30), speed] },
-  { type: 'rings', name: 'Ritim Halkaları', icon: Orbit, component: Rings,
-    defaults: { ...base, sensitivity: 0.5, opacity: 0.6 }, fields: [color, speed, { key: 'sensitivity', label: 'Hassasiyet', type: 'range', min: 0, max: 1, step: 0.05 }] },
-  { type: 'aurora', name: 'Aurora', icon: Rainbow, component: Aurora,
+  { type: 'rings', icon: Orbit, component: Rings,
+    defaults: { ...base, sensitivity: 0.5, opacity: 0.6 }, fields: [color, speed, { key: 'sensitivity', label: 'f.sensitivity', type: 'range', min: 0, max: 1, step: 0.05 }] },
+  { type: 'aurora', icon: Rainbow, component: Aurora,
     defaults: { ...base, color2: '#00d4ff', color3: '#ff6ec7', opacity: 0.35 }, fields: [
-      { key: 'color', label: 'Renk 1', type: 'color' }, { key: 'color2', label: 'Renk 2', type: 'color' }, { key: 'color3', label: 'Renk 3', type: 'color' }, speed, react] },
-  { type: 'floor', name: 'Alt Spektrum', icon: Waves, component: Floor,
-    defaults: { ...base, density: 64, height: 0.25, opacity: 0.5 }, fields: [color, { key: 'density', label: 'Çubuk sayısı', type: 'range', min: 16, max: 160 }, { key: 'height', label: 'Yükseklik', type: 'range', min: 0.05, max: 0.8, step: 0.05 }] },
+      { key: 'color', label: 'f.color1', type: 'color' }, { key: 'color2', label: 'f.color2', type: 'color' }, { key: 'color3', label: 'f.color3', type: 'color' }, speed, react] },
+  { type: 'floor', icon: Waves, component: Floor,
+    defaults: { ...base, density: 64, height: 0.25, opacity: 0.5 }, fields: [color, { key: 'density', label: 'f.count', type: 'range', min: 16, max: 160 }, { key: 'height', label: 'f.height', type: 'range', min: 0.05, max: 0.8, step: 0.05 }] },
 ]
 
 export const effectDef = (type: string) => EFFECTS.find((e) => e.type === type)
 
-export const WIDGET_ANIMS = opts(['none', 'Yok'], ['float', 'Süzülme'], ['pulse', 'Ritimle büyüme'], ['glow', 'Ritimle parlama'], ['tilt', 'Sallanma'])
+export const WIDGET_ANIMS = opts(['none', 'anim.none'], ['float', 'anim.float'], ['pulse', 'anim.pulse'], ['glow', 'anim.glow'], ['tilt', 'anim.tilt'])

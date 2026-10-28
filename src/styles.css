@@ -273,3 +273,10 @@ body.no-shadow .widget.has-panel { box-shadow: none; }
 }
 .preset:hover { outline: 2px solid var(--accent); }
 .preset-swatch { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+.toolbar .lang {
+  display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 4px 0 10px;
+  border-radius: 999px; border: 1px solid var(--ui-line); background: rgba(18, 18, 24, 0.7); backdrop-filter: blur(10px);
+}
+.toolbar .lang select { border: 0; outline: 0; background: transparent; padding-right: 4px; cursor: pointer; }
+.toolbar .lang option { background: #1b1b23; }

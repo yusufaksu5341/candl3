@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { engine, EQ_BANDS } from '../audio/engine'
+import { t } from '../i18n'
 import type { Track } from '../types'
 
 type Repeat = 'off' | 'all' | 'one'
@@ -184,7 +185,7 @@ audio.addEventListener('ended', () => {
 })
 audio.addEventListener('error', () => {
   if (!audio.getAttribute('src')) return
-  usePlayer.setState({ error: 'Parça çalınamadı, sıradakine geçiliyor.', loading: false })
+  usePlayer.setState({ error: t('m.playError'), loading: false })
   setTimeout(() => usePlayer.getState().next(), 1200)
 })
 

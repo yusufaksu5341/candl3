@@ -7,8 +7,6 @@ export type WidgetProps<S = Settings> = { id: string; settings: S }
 
 export type WidgetDef = {
   type: string
-  name: string
-  description: string
   icon: LucideIcon
   size: { w: number; h: number }
   minSize?: { w: number; h: number }

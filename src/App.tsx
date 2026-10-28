@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { engine } from './audio/engine'
 import Backdrop from './components/Backdrop'
 import Board from './components/Board'
+import { useLang } from './i18n'
 import { loadFont } from './lib/presets'
 import CustomizePanel from './components/CustomizePanel'
 import Toolbar from './components/Toolbar'
@@ -48,6 +49,8 @@ function useBeatVar() {
 export default function App() {
   const theme = useDesign((s) => s.theme)
   const panelOpen = useDesign((s) => s.panelOpen)
+  const lang = useLang((s) => s.lang)
+  useEffect(() => { document.documentElement.lang = lang }, [lang])
   useThemeVars(theme)
   useBeatVar()
 

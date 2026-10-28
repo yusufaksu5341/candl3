@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import { Copy, Settings2, Trash2 } from 'lucide-react'
+import { useT } from '../i18n'
 import { useDesign } from '../store/design'
 import type { WidgetInstance } from '../store/design'
 import { COMMON_DEFAULTS, widgetDef } from '../widgets/registry'
@@ -20,6 +21,7 @@ function useIsMobile() {
 }
 
 function WidgetFrame({ w }: { w: WidgetInstance }) {
+  const t = useT()
   const def = widgetDef(w.type)
   const editMode = useDesign((s) => s.editMode)
   const selected = useDesign((s) => s.selected === w.id)
@@ -39,10 +41,10 @@ function WidgetFrame({ w }: { w: WidgetInstance }) {
       </div>
       {editMode && (
         <div className="widget-tools no-drag">
-          <span className="widget-name">{def.name}</span>
-          <button title="Ayarlar" onClick={() => selectWidget(w.id)}><Settings2 size={14} /></button>
-          <button title="Çoğalt" onClick={() => duplicateWidget(w.id)}><Copy size={14} /></button>
-          <button title="Kaldır" onClick={() => removeWidget(w.id)}><Trash2 size={14} /></button>
+          <span className="widget-name">{t(`w.${def.type}`)}</span>
+          <button title={t('widget.settings')} onClick={() => selectWidget(w.id)}><Settings2 size={14} /></button>
+          <button title={t('widget.duplicate')} onClick={() => duplicateWidget(w.id)}><Copy size={14} /></button>
+          <button title={t('widget.remove')} onClick={() => removeWidget(w.id)}><Trash2 size={14} /></button>
         </div>
       )}
     </div>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { engine, EQ_BANDS, EQ_PRESETS } from '../audio/engine'
+import { useT } from '../i18n'
 import { useAccent, useCanvas } from '../lib/hooks'
 import { usePlayer } from '../store/player'
 import type { WidgetProps } from './types'
@@ -41,6 +42,7 @@ function useImage(src?: string) {
 export const eqDefaults = { showPresets: true, showLabels: true }
 
 export function EqualizerWidget({ settings: s }: WidgetProps<typeof eqDefaults>) {
+  const t = useT()
   const eq = usePlayer((p) => p.eq)
   const { setEq, setEqAll } = usePlayer.getState()
   const preset = Object.entries(EQ_PRESETS).find(([, g]) => g.every((v, i) => v === eq[i]))?.[0] ?? ''
@@ -48,8 +50,8 @@ export function EqualizerWidget({ settings: s }: WidgetProps<typeof eqDefaults>)
     <div className="eq">
       {s.showPresets && (
         <select className="eq-preset" value={preset} onChange={(e) => setEqAll(EQ_PRESETS[e.target.value])}>
-          {!preset && <option value="">Özel</option>}
-          {Object.keys(EQ_PRESETS).map((k) => <option key={k} value={k}>{k}</option>)}
+          {!preset && <option value="">{t('eq.custom')}</option>}
+          {Object.keys(EQ_PRESETS).map((k) => <option key={k} value={k}>{t(`eq.${k}`)}</option>)}
         </select>
       )}
       <div className="eq-bands">
