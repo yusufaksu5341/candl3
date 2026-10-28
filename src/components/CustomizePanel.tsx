@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Plus, X } from 'lucide-react'
 import { useDesign } from '../store/design'
 import { COMMON_DEFAULTS, COMMON_FIELDS, WIDGETS, widgetDef } from '../widgets/registry'
+import { BackgroundTab, EffectsTab, PresetsTab, ThemeTab } from './DesignTabs'
 import FieldForm from './FieldForm'
 
 function WidgetsTab() {
@@ -50,6 +51,10 @@ function SelectedTab() {
 export const TABS: { id: string; label: string; render: () => ReactNode }[] = [
   { id: 'widgets', label: 'Araçlar', render: () => <WidgetsTab /> },
   { id: 'selected', label: 'Seçili', render: () => <SelectedTab /> },
+  { id: 'theme', label: 'Tema', render: () => <ThemeTab /> },
+  { id: 'background', label: 'Arka plan', render: () => <BackgroundTab /> },
+  { id: 'effects', label: 'Animasyonlar', render: () => <EffectsTab /> },
+  { id: 'presets', label: 'Hazır stiller', render: () => <PresetsTab /> },
 ]
 
 export default function CustomizePanel() {

@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { engine } from './audio/engine'
+import Backdrop from './components/Backdrop'
 import Board from './components/Board'
+import { loadFont } from './lib/presets'
 import CustomizePanel from './components/CustomizePanel'
 import Toolbar from './components/Toolbar'
 import { useDesign } from './store/design'
@@ -13,6 +15,7 @@ function hexToRgb(hex: string) {
 
 function useThemeVars(theme: Theme) {
   useEffect(() => {
+    loadFont(theme.font)
     const r = document.documentElement.style
     r.setProperty('--accent', theme.accent)
     r.setProperty('--accent-rgb', hexToRgb(theme.accent))
@@ -50,6 +53,7 @@ export default function App() {
 
   return (
     <div className={`app ${panelOpen ? 'with-panel' : ''}`}>
+      <Backdrop />
       <main className="stage">
         <Toolbar />
         <Board />

@@ -248,3 +248,28 @@ body.no-shadow .widget.has-panel { box-shadow: none; }
   writing-mode: vertical-lr; direction: rtl; flex: 1; width: 4px !important; min-height: 40px;
   background: linear-gradient(to top, var(--accent) var(--pct, 50%), rgba(var(--text-rgb), .15) var(--pct, 50%)) !important;
 }
+
+/* ---------- backdrop & effects ---------- */
+.backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.bg-layer { position: absolute; inset: -40px; transition: background .4s ease; }
+.bg-layer img, .bg-layer video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bg-layer.animated { background-size: 400% 400% !important; animation: gradient-drift 22s ease infinite; }
+@keyframes gradient-drift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.bg-layer.beat-zoom { transform: scale(calc(1 + var(--beat) * 0.06)); }
+.bg-dim { position: absolute; inset: 0; background: #000; }
+.fx { position: absolute; inset: 0; width: 100%; height: 100%; }
+.app.with-panel .backdrop { right: 0; }
+
+.fx-item { border: 1px solid var(--ui-line); border-radius: 10px; background: #17171e; margin-bottom: 6px; }
+.fx-item summary { display: flex; align-items: center; gap: 10px; padding: 8px 10px; cursor: pointer; list-style: none; }
+.fx-item summary::-webkit-details-marker { display: none; }
+.fx-item[open] summary { border-bottom: 1px solid var(--ui-line); }
+.fx-item .form { padding: 12px; }
+
+.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.preset {
+  height: 64px; border-radius: 10px; border: 1px solid var(--ui-line); padding: 10px;
+  display: flex; align-items: flex-end; gap: 8px; font-size: 12px; text-align: left;
+}
+.preset:hover { outline: 2px solid var(--accent); }
+.preset-swatch { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
