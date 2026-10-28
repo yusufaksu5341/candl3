@@ -8,6 +8,9 @@ Internet Archive ses dosyalarını CORS izniyle sunduğu için ses Web Audio API
 
 - **Düzenle**: Araçları sürükle, kenarlarından boyutlandır, çoğalt veya kaldır. Bir araca tıklayınca ayarları açılır.
 - **Özelleştir**: Araç ekle, tema, arka plan, animasyonlar ve hazır stiller.
+- **Geri al / İleri al**: Araç çubuğundaki oklar veya Ctrl+Z / Ctrl+Y.
+- **Sayfa**: Sayfa ekran boyuna göre ölçeklenir; yeni araçlar boş alana yerleşir. Tema sekmesinden sayfa yüksekliği (1–4 ekran) artırılabilir veya araçlar tek ekrana sığdırılabilir.
+- **Dil**: English (varsayılan), Türkçe, Español, Deutsch, Français.
 - Tasarım tarayıcıda otomatik kaydedilir; JSON olarak dışa/içe aktarılabilir.
 
 ## Araçlar (15)
