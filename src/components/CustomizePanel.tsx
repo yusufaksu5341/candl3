@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Plus, X } from 'lucide-react'
 import { useT } from '../i18n'
 import type { TKey } from '../i18n'
+import { useDragScroll } from '../lib/useDragScroll'
 import { useDesign } from '../store/design'
 import { COMMON_DEFAULTS, COMMON_FIELDS, WIDGETS, widgetDef } from '../widgets/registry'
 import { BackgroundTab, EffectsTab, PresetsTab, ThemeTab } from './DesignTabs'
@@ -67,6 +68,7 @@ export default function CustomizePanel() {
   const tab = useDesign((s) => s.panelTab)
   const close = useDesign((s) => s.closePanel)
   const openPanel = useDesign((s) => s.openPanel)
+  const tabsRef = useDragScroll<HTMLElement>()
   if (!open) return null
   const current = TABS.find((x) => x.id === tab) ?? TABS[0]
   return (
@@ -77,7 +79,7 @@ export default function CustomizePanel() {
         <strong>{t('panel.title')}</strong>
         <button className="icon" onClick={close} title={t('panel.close')}><X size={18} /></button>
       </header>
-      <nav className="tabs">
+      <nav className="tabs hscroll" ref={tabsRef}>
         {TABS.map((x) => (
           <button key={x.id} className={x.id === current.id ? 'active' : ''} onClick={() => openPanel(x.id)}>{t(x.label)}</button>
         ))}

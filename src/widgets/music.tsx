@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { GENRES, getAlbumTracks, searchAlbums } from '../api/archive'
 import { useT } from '../i18n'
+import { useDragScroll } from '../lib/useDragScroll'
 import { formatTime, usePlayer } from '../store/player'
 import type { Album, Track } from '../types'
 import type { WidgetProps } from './types'
@@ -118,6 +119,7 @@ export function LibraryWidget({ settings: s }: WidgetProps<typeof libraryDefault
   const [album, setAlbum] = useState<Album>()
   const [tracks, setTracks] = useState<Track[]>([])
   const fileInput = useRef<HTMLInputElement>(null)
+  const chipsRef = useDragScroll<HTMLDivElement>()
   const { playQueue, addToQueue } = usePlayer.getState()
   const reqId = useRef(0)
 
@@ -209,7 +211,7 @@ export function LibraryWidget({ settings: s }: WidgetProps<typeof libraryDefault
         <input ref={fileInput} type="file" accept="audio/*" multiple hidden onChange={(e) => { addFiles(e.target.files); e.target.value = '' }} />
       </form>
       {s.showGenres && (
-        <div className="chips">
+        <div className="chips hscroll no-drag" ref={chipsRef}>
           {GENRES.map((g) => (
             <button key={g} className={`chip ${genre === g ? 'on' : ''}`} onClick={() => {
               const next = genre === g ? undefined : g
