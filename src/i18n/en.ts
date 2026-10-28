@@ -23,6 +23,9 @@ export const en = {
   'widget.settings': 'Settings',
   'widget.duplicate': 'Duplicate',
   'widget.remove': 'Remove',
+  'widget.up': 'Move up',
+  'widget.down': 'Move down',
+  'f.mobileHeight': 'Height on phones (0 = auto)',
 
   'page.title': 'Page',
   'page.screens': 'Page height (screens)',

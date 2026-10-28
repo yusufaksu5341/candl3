@@ -10,6 +10,8 @@ export type WidgetDef = {
   icon: LucideIcon
   size: { w: number; h: number }
   minSize?: { w: number; h: number }
+  /** Smallest comfortable height in the phone layout, in px. */
+  mobileMin?: number
   defaults: Settings
   fields: Field[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

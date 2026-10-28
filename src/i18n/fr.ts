@@ -25,6 +25,9 @@ export const fr: Dict = {
   'widget.settings': 'Réglages',
   'widget.duplicate': 'Dupliquer',
   'widget.remove': 'Supprimer',
+  'widget.up': 'Monter',
+  'widget.down': 'Descendre',
+  'f.mobileHeight': 'Hauteur sur mobile (0 = auto)',
 
   'page.title': 'Page',
   'page.screens': 'Hauteur de la page (écrans)',

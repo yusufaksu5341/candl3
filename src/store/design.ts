@@ -82,6 +82,13 @@ export type DesignSnapshot = {
   background: Background
   effects: Effect[]
   page: Page
+  /** Widget order in the single-column phone layout; unlisted widgets follow by desktop position. */
+  mobileOrder: string[]
+}
+
+export function mobileOrdered(layout: Layout[], order: string[]) {
+  const rank = (id: string) => { const i = order.indexOf(id); return i < 0 ? Infinity : i }
+  return [...layout].sort((a, b) => rank(a.i) - rank(b.i) || a.y - b.y || a.x - b.x)
 }
 
 type DesignState = DesignSnapshot & {
@@ -117,6 +124,7 @@ type DesignState = DesignSnapshot & {
   applyStyle: (theme: Theme, background: Background, effects: Effect[]) => void
   /** Restores the starting widgets and layout but keeps the look. */
   resetLayout: () => void
+  moveMobile: (id: string, dir: -1 | 1) => void
 }
 
 export const uid = () => Math.random().toString(36).slice(2, 9)
@@ -169,6 +177,7 @@ export const DEFAULT_DESIGN: DesignSnapshot = {
   },
   effects: [{ id: 'fx-stars', type: 'stars', enabled: true, settings: {} }],
   page: { screens: 1 },
+  mobileOrder: ['disc', 'play', 'lib', 'queue', 'eq', 'spec', 'clock'],
 }
 
 const HISTORY_LIMIT = 100
@@ -178,8 +187,8 @@ let lastKey: string | undefined
 let lastAt = 0
 
 function pick(s: DesignSnapshot): DesignSnapshot {
-  const { widgets, layout, theme, background, effects, page } = s
-  return structuredClone({ widgets, layout, theme, background, effects, page })
+  const { widgets, layout, theme, background, effects, page, mobileOrder } = s
+  return structuredClone({ widgets, layout, theme, background, effects, page, mobileOrder })
 }
 
 export const useDesign = create<DesignState>()(
@@ -317,13 +326,23 @@ export const useDesign = create<DesignState>()(
             background: { ...DEFAULT_DESIGN.background, ...s.background },
             effects: s.effects ?? [],
             page: { screens: Math.max(s.page?.screens ?? 1, screensFor(s.layout)) },
+            mobileOrder: s.mobileOrder ?? [],
             selected: undefined,
           })
         },
         resetLayout: () => {
           record()
           const d = structuredClone(DEFAULT_DESIGN)
-          set({ widgets: d.widgets, layout: d.layout, page: d.page, selected: undefined })
+          set({ widgets: d.widgets, layout: d.layout, page: d.page, mobileOrder: d.mobileOrder, selected: undefined })
+        },
+        moveMobile: (id, dir) => {
+          const ids = mobileOrdered(get().layout, get().mobileOrder).map((l) => l.i)
+          const i = ids.indexOf(id)
+          const j = i + dir
+          if (i < 0 || j < 0 || j >= ids.length) return
+          ;[ids[i], ids[j]] = [ids[j], ids[i]]
+          record()
+          set({ mobileOrder: ids })
         },
         applyStyle: (theme, background, effects) => {
           record()
@@ -337,7 +356,7 @@ export const useDesign = create<DesignState>()(
       // Designs saved before pages existed may extend below one screen.
       merge: (saved, current) => {
         const s = { ...current, ...(saved as Partial<DesignSnapshot>) }
-        return { ...s, page: { screens: Math.max(s.page?.screens ?? 1, screensFor(s.layout)) } }
+        return { ...s, mobileOrder: s.mobileOrder ?? [], page: { screens: Math.max(s.page?.screens ?? 1, screensFor(s.layout)) } }
       },
     },
   ),

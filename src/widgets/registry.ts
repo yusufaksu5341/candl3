@@ -17,7 +17,7 @@ import {
 } from './visual'
 
 /** Settings every widget has, regardless of type. Labels are i18n keys. */
-export const COMMON_DEFAULTS = { panel: true, anim: 'theme', padding: 14 }
+export const COMMON_DEFAULTS = { panel: true, anim: 'theme', padding: 14, mobileHeight: 0 }
 
 export const COMMON_FIELDS: Field[] = [
   { key: 'panel', label: 'f.panel', type: 'toggle' },
@@ -26,13 +26,15 @@ export const COMMON_FIELDS: Field[] = [
     key: 'anim', label: 'f.anim', type: 'select',
     options: opts(['theme', 'anim.theme'], ['none', 'anim.none'], ['float', 'anim.float'], ['pulse', 'anim.pulse'], ['glow', 'anim.glow'], ['tilt', 'anim.tilt']),
   },
+  // 0 = automatic (derived from the desktop height)
+  { key: 'mobileHeight', label: 'f.mobileHeight', type: 'range', min: 0, max: 800, step: 20 },
 ]
 
 const WEIGHTS = opts(['300', 'opt.thin'], ['500', 'opt.normal'], ['700', 'opt.bold'], ['900', 'opt.black'])
 
 export const WIDGETS: WidgetDef[] = [
   {
-    type: 'player', icon: PlayCircle,
+    type: 'player', mobileMin: 230, icon: PlayCircle,
     size: { w: 10, h: 5 }, minSize: { w: 5, h: 3 }, defaults: playerDefaults, component: PlayerWidget,
     fields: [
       { key: 'showTrack', label: 'f.showTrack', type: 'toggle' },
@@ -42,7 +44,7 @@ export const WIDGETS: WidgetDef[] = [
     ],
   },
   {
-    type: 'nowplaying', icon: Disc3,
+    type: 'nowplaying', mobileMin: 260, icon: Disc3,
     size: { w: 7, h: 10 }, defaults: nowPlayingDefaults, component: NowPlayingWidget,
     fields: [
       { key: 'showCover', label: 'f.showCover', type: 'toggle' },
@@ -52,7 +54,7 @@ export const WIDGETS: WidgetDef[] = [
     ],
   },
   {
-    type: 'library', icon: Library,
+    type: 'library', mobileMin: 440, icon: Library,
     size: { w: 7, h: 18 }, minSize: { w: 4, h: 8 }, defaults: libraryDefaults, component: LibraryWidget,
     fields: [
       { key: 'showGenres', label: 'f.showGenres', type: 'toggle' },
@@ -60,12 +62,12 @@ export const WIDGETS: WidgetDef[] = [
     ],
   },
   {
-    type: 'queue', icon: ListMusic,
+    type: 'queue', mobileMin: 280, icon: ListMusic,
     size: { w: 7, h: 11 }, minSize: { w: 4, h: 5 }, defaults: queueDefaults, component: QueueWidget,
     fields: [{ key: 'showCovers', label: 'f.showCovers', type: 'toggle' }],
   },
   {
-    type: 'equalizer', icon: SlidersVertical,
+    type: 'equalizer', mobileMin: 260, icon: SlidersVertical,
     size: { w: 7, h: 9 }, minSize: { w: 5, h: 5 }, defaults: eqDefaults, component: EqualizerWidget,
     fields: [
       { key: 'showPresets', label: 'f.showPresets', type: 'toggle' },
@@ -73,7 +75,7 @@ export const WIDGETS: WidgetDef[] = [
     ],
   },
   {
-    type: 'circle', icon: CircleDot,
+    type: 'circle', mobileMin: 300, icon: CircleDot,
     size: { w: 10, h: 12 }, minSize: { w: 4, h: 5 }, defaults: circleDefaults, component: CircleWidget,
     fields: [
       { key: 'style', label: 'f.style', type: 'select', options: opts(['bars', 'opt.bars'], ['wave', 'opt.wave']) },
@@ -110,7 +112,7 @@ export const WIDGETS: WidgetDef[] = [
     ],
   },
   {
-    type: 'vinyl', icon: Disc,
+    type: 'vinyl', mobileMin: 300, icon: Disc,
     size: { w: 8, h: 10 }, minSize: { w: 4, h: 5 }, defaults: vinylDefaults, component: VinylWidget,
     fields: [
       { key: 'speed', label: 'f.speed', type: 'range', min: 0.2, max: 3, step: 0.1 },

@@ -25,6 +25,9 @@ export const es: Dict = {
   'widget.settings': 'Ajustes',
   'widget.duplicate': 'Duplicar',
   'widget.remove': 'Eliminar',
+  'widget.up': 'Subir',
+  'widget.down': 'Bajar',
+  'f.mobileHeight': 'Altura en móviles (0 = auto)',
 
   'page.title': 'Página',
   'page.screens': 'Altura de la página (pantallas)',

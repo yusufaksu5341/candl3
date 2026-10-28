@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { effectDef } from '../effects'
 import { loadBlob } from '../lib/blobStore'
+import { REDUCED_MOTION_QUERY, useIsMobile, useMedia } from '../lib/media'
 import { useDesign } from '../store/design'
 
 export const BG_UPLOAD_KEY = 'background'
@@ -34,6 +35,8 @@ export default function Backdrop() {
     return () => window.removeEventListener(BG_UPLOADED_EVENT, onUpload)
   }, [])
   const uploadUrl = useUploadUrl(bg.type === 'upload', version)
+  const reducedMotion = useMedia(REDUCED_MOTION_QUERY)
+  const mobile = useIsMobile()
 
   const mediaUrl = bg.type === 'upload' ? uploadUrl : bg.url
   const isVideo = bg.type === 'video' || (bg.type === 'upload' && bg.uploadKind === 'video')
@@ -56,11 +59,14 @@ export default function Backdrop() {
         {isVideo && mediaUrl && <video src={mediaUrl} autoPlay muted loop playsInline />}
       </div>
       <div className="bg-dim" style={{ opacity: bg.dim }} />
-      {effects.filter((e) => e.enabled).map((e) => {
+      {!reducedMotion && effects.filter((e) => e.enabled).map((e) => {
         const def = effectDef(e.type)
         if (!def) return null
         const Comp = def.component
-        return <Comp key={e.id} settings={{ ...def.defaults, ...e.settings } as never} />
+        const settings = { ...def.defaults, ...e.settings } as Record<string, unknown>
+        // Phones get half the particles to keep scrolling smooth.
+        if (mobile && typeof settings.density === 'number') settings.density = Math.max(4, Math.round(settings.density / 2))
+        return <Comp key={e.id} settings={settings as never} />
       })}
     </div>
   )

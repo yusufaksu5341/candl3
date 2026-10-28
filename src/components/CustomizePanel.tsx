@@ -70,6 +70,8 @@ export default function CustomizePanel() {
   if (!open) return null
   const current = TABS.find((x) => x.id === tab) ?? TABS[0]
   return (
+    <>
+    <div className="sheet-scrim" onClick={close} />
     <aside className="customize">
       <header>
         <strong>{t('panel.title')}</strong>
@@ -82,5 +84,6 @@ export default function CustomizePanel() {
       </nav>
       <div className="customize-body">{current.render()}</div>
     </aside>
+    </>
   )
 }

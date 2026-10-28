@@ -13,7 +13,7 @@ export function useCanvas(draw: (ctx: CanvasRenderingContext2D, w: number, h: nu
     const ctx = canvas.getContext('2d')!
     let w = 0, h = 0, raf = 0
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 760 ? 1.5 : 2)
       const r = canvas.getBoundingClientRect()
       w = r.width; h = r.height
       canvas.width = Math.max(1, Math.round(w * dpr))

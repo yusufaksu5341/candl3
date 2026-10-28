@@ -25,6 +25,9 @@ export const tr: Dict = {
   'widget.settings': 'Ayarlar',
   'widget.duplicate': 'Çoğalt',
   'widget.remove': 'Kaldır',
+  'widget.up': 'Yukarı taşı',
+  'widget.down': 'Aşağı taşı',
+  'f.mobileHeight': 'Telefonda yükseklik (0 = otomatik)',
 
   'page.title': 'Sayfa',
   'page.screens': 'Sayfa yüksekliği (ekran)',

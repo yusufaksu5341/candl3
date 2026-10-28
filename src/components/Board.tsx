@@ -1,24 +1,14 @@
 import { useEffect, useState } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
-import { Copy, Settings2, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, Copy, Settings2, Trash2 } from 'lucide-react'
 import { useT } from '../i18n'
-import { COLS, maxRows, ROWS_PER_SCREEN, useDesign } from '../store/design'
+import { useIsMobile } from '../lib/media'
+import { COLS, maxRows, mobileOrdered, ROWS_PER_SCREEN, useDesign } from '../store/design'
 import type { WidgetInstance } from '../store/design'
 import { COMMON_DEFAULTS, widgetDef } from '../widgets/registry'
 
 const Grid = WidthProvider(GridLayout)
-const MOBILE = 760
 const TOOLBAR_H = 52
-
-function useIsMobile() {
-  const [mobile, setMobile] = useState(() => window.innerWidth < MOBILE)
-  useEffect(() => {
-    const onResize = () => setMobile(window.innerWidth < MOBILE)
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
-  return mobile
-}
 
 function useViewportHeight() {
   const [h, setH] = useState(() => window.innerHeight)
@@ -30,13 +20,13 @@ function useViewportHeight() {
   return h
 }
 
-function WidgetFrame({ w }: { w: WidgetInstance }) {
+function WidgetFrame({ w, mobile }: { w: WidgetInstance; mobile?: boolean }) {
   const t = useT()
   const def = widgetDef(w.type)
   const editMode = useDesign((s) => s.editMode)
   const selected = useDesign((s) => s.selected === w.id)
   const themeAnim = useDesign((s) => s.theme.widgetAnim)
-  const { selectWidget, removeWidget, duplicateWidget } = useDesign.getState()
+  const { selectWidget, removeWidget, duplicateWidget, moveMobile } = useDesign.getState()
   if (!def) return null
 
   const settings = { ...COMMON_DEFAULTS, ...def.defaults, ...w.settings } as Record<string, unknown> & typeof COMMON_DEFAULTS
@@ -45,13 +35,15 @@ function WidgetFrame({ w }: { w: WidgetInstance }) {
   const cls = ['widget', settings.panel ? 'has-panel' : 'no-panel', `anim-${anim}`, selected && 'selected'].filter(Boolean).join(' ')
 
   return (
-    <div className={cls} onMouseDown={() => editMode && selectWidget(w.id)}>
+    <div className={cls} onPointerDown={() => editMode && selectWidget(w.id)}>
       <div className="widget-body" style={{ padding: settings.padding }}>
         <Comp id={w.id} settings={settings} />
       </div>
       {editMode && (
         <div className="widget-tools no-drag">
           <span className="widget-name">{t(`w.${def.type}`)}</span>
+          {mobile && <button title={t('widget.up')} onClick={() => moveMobile(w.id, -1)}><ArrowUp size={14} /></button>}
+          {mobile && <button title={t('widget.down')} onClick={() => moveMobile(w.id, 1)}><ArrowDown size={14} /></button>}
           <button title={t('widget.settings')} onClick={() => selectWidget(w.id)}><Settings2 size={14} /></button>
           <button title={t('widget.duplicate')} onClick={() => duplicateWidget(w.id)}><Copy size={14} /></button>
           <button title={t('widget.remove')} onClick={() => removeWidget(w.id)}><Trash2 size={14} /></button>
@@ -68,6 +60,7 @@ export default function Board() {
   const editMode = useDesign((s) => s.editMode)
   const setLayout = useDesign((s) => s.setLayout)
   const page = useDesign((s) => s.page)
+  const mobileOrder = useDesign((s) => s.mobileOrder)
   const mobile = useIsMobile()
   const viewport = useViewportHeight()
   // Rows are sized so ROWS_PER_SCREEN rows exactly fill one screen below the toolbar.
@@ -76,16 +69,20 @@ export default function Board() {
   const rows = maxRows(page)
 
   if (mobile) {
-    const ordered = [...layout].sort((a, b) => a.y - b.y || a.x - b.x)
     return (
-      <div className="board-mobile" style={{ gap }}>
-        {ordered.map((l) => {
+      <div className={`board-mobile ${editMode ? 'editing' : ''}`} style={{ gap }}>
+        {mobileOrdered(layout, mobileOrder).map((l) => {
           const w = widgets.find((x) => x.id === l.i)
-          return w ? (
-            <div key={w.id} style={{ height: Math.max(140, l.h * 30) }}>
-              <WidgetFrame w={w} />
+          if (!w) return null
+          const custom = Number(w.settings.mobileHeight) || 0
+          // Desktop rows translate to a phone-friendly height unless the user set one.
+          const min = widgetDef(w.type)?.mobileMin ?? 120
+          const height = custom || Math.min(560, Math.max(min, l.h * 26))
+          return (
+            <div key={w.id} className="mobile-cell" style={{ height }}>
+              <WidgetFrame w={w} mobile />
             </div>
-          ) : null
+          )
         })}
       </div>
     )
