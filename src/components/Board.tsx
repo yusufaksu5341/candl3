@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import GridLayout, { WidthProvider } from 'react-grid-layout'
 import { Copy, Settings2, Trash2 } from 'lucide-react'
 import { useT } from '../i18n'
-import { useDesign } from '../store/design'
+import { COLS, maxRows, ROWS_PER_SCREEN, useDesign } from '../store/design'
 import type { WidgetInstance } from '../store/design'
 import { COMMON_DEFAULTS, widgetDef } from '../widgets/registry'
 
 const Grid = WidthProvider(GridLayout)
-const COLS = 24
 const MOBILE = 760
+const TOOLBAR_H = 52
 
 function useIsMobile() {
   const [mobile, setMobile] = useState(() => window.innerWidth < MOBILE)
@@ -18,6 +18,16 @@ function useIsMobile() {
     return () => window.removeEventListener('resize', onResize)
   }, [])
   return mobile
+}
+
+function useViewportHeight() {
+  const [h, setH] = useState(() => window.innerHeight)
+  useEffect(() => {
+    const onResize = () => setH(window.innerHeight)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+  return h
 }
 
 function WidgetFrame({ w }: { w: WidgetInstance }) {
@@ -57,7 +67,13 @@ export default function Board() {
   const gap = useDesign((s) => s.theme.gap)
   const editMode = useDesign((s) => s.editMode)
   const setLayout = useDesign((s) => s.setLayout)
+  const page = useDesign((s) => s.page)
   const mobile = useIsMobile()
+  const viewport = useViewportHeight()
+  // Rows are sized so ROWS_PER_SCREEN rows exactly fill one screen below the toolbar.
+  const screenH = Math.max(320, viewport - TOOLBAR_H)
+  const rowHeight = Math.max(8, (screenH - gap * (ROWS_PER_SCREEN + 1)) / ROWS_PER_SCREEN)
+  const rows = maxRows(page)
 
   if (mobile) {
     const ordered = [...layout].sort((a, b) => a.y - b.y || a.x - b.x)
@@ -78,19 +94,21 @@ export default function Board() {
   return (
     <Grid
       className={`board ${editMode ? 'editing' : ''}`}
+      style={{ minHeight: screenH * page.screens }}
       layout={layout.map((l) => {
         const min = widgetDef(widgets.find((w) => w.id === l.i)?.type ?? '')?.minSize
         return { ...l, minW: min?.w ?? 2, minH: min?.h ?? 2 }
       })}
       cols={COLS}
-      rowHeight={30}
+      rowHeight={rowHeight}
+      maxRows={rows}
       margin={[gap, gap]}
       containerPadding={[gap, gap]}
       isDraggable={editMode}
       isResizable={editMode}
       draggableCancel=".no-drag, input, textarea, select, button"
       compactType={null}
-      preventCollision={false}
+      preventCollision
       resizeHandles={['se', 'e', 's']}
       onLayoutChange={(l) => setLayout(l.map(({ i, x, y, w, h }) => ({ i, x, y, w, h })))}
     >

@@ -15,7 +15,7 @@ function WidgetsTab() {
       <p className="muted small">{t('panel.widgetsHint')}</p>
       <div className="widget-list">
         {WIDGETS.map((d) => (
-          <button key={d.type} className="widget-card" onClick={() => addWidget(d.type, d.size, {})}>
+          <button key={d.type} className="widget-card" onClick={() => { if (!addWidget(d.type, d.size, d.minSize)) alert(t('page.noSpace')) }}>
             <d.icon size={18} />
             <span>
               <strong>{t(`w.${d.type}`)}</strong>

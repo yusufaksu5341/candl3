@@ -40,12 +40,48 @@ export type Background = {
 
 export type Effect = { id: string; type: string; enabled: boolean; settings: Settings }
 
+/** The page is a fixed canvas: COLS wide, ROWS_PER_SCREEN rows per screen height. */
+export type Page = { screens: number }
+
+export const COLS = 24
+export const ROWS_PER_SCREEN = 24
+
+export const maxRows = (page: Page) => Math.round(ROWS_PER_SCREEN * page.screens)
+
+type Size = { w: number; h: number }
+
+function overlaps(a: { x: number; y: number } & Size, b: Layout) {
+  return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h
+}
+
+/** First free top-left slot for `size`, shrinking toward `min` if the page is full. */
+export function findSpot(layout: Layout[], size: Size, min: Size, rows: number) {
+  for (let h = size.h; h >= min.h; h--) {
+    for (let w = size.w; w >= min.w; w--) {
+      for (let y = 0; y + h <= rows; y++) {
+        for (let x = 0; x + w <= COLS; x++) {
+          const r = { x, y, w, h }
+          if (!layout.some((l) => overlaps(r, l))) return r
+        }
+      }
+    }
+  }
+  return undefined
+}
+
+/** Smallest page (in half screens) that still holds every widget. */
+export function screensFor(layout: Layout[]) {
+  const bottom = layout.reduce((m, l) => Math.max(m, l.y + l.h), 0)
+  return Math.max(1, Math.ceil((bottom / ROWS_PER_SCREEN) * 2) / 2)
+}
+
 export type DesignSnapshot = {
   widgets: WidgetInstance[]
   layout: Layout[]
   theme: Theme
   background: Background
   effects: Effect[]
+  page: Page
 }
 
 type DesignState = DesignSnapshot & {
@@ -62,7 +98,11 @@ type DesignState = DesignSnapshot & {
   openPanel: (tab?: string) => void
   closePanel: () => void
   setLayout: (layout: Layout[]) => void
-  addWidget: (type: string, size: { w: number; h: number }, settings: Settings) => void
+  /** Returns false when the page has no room left for the widget. */
+  addWidget: (type: string, size: Size, min?: Size) => boolean
+  setPage: (patch: Partial<Page>) => void
+  /** Moves widgets that are off the first screen into free space on it, shrinking them if needed. */
+  fitToPage: () => void
   removeWidget: (id: string) => void
   duplicateWidget: (id: string) => void
   updateWidget: (id: string, patch: Settings) => void
@@ -123,6 +163,7 @@ export const DEFAULT_DESIGN: DesignSnapshot = {
     beatZoom: false,
   },
   effects: [{ id: 'fx-stars', type: 'stars', enabled: true, settings: {} }],
+  page: { screens: 1 },
 }
 
 const HISTORY_LIMIT = 100
@@ -132,8 +173,8 @@ let lastKey: string | undefined
 let lastAt = 0
 
 function pick(s: DesignSnapshot): DesignSnapshot {
-  const { widgets, layout, theme, background, effects } = s
-  return structuredClone({ widgets, layout, theme, background, effects })
+  const { widgets, layout, theme, background, effects, page } = s
+  return structuredClone({ widgets, layout, theme, background, effects, page })
 }
 
 export const useDesign = create<DesignState>()(
@@ -179,16 +220,37 @@ export const useDesign = create<DesignState>()(
           record('layout')
           set({ layout })
         },
-        addWidget: (type, size, settings) => {
+        addWidget: (type, size, min = { w: 2, h: 2 }) => {
+          const spot = findSpot(get().layout, size, min, maxRows(get().page))
+          if (!spot) return false
           record()
           const id = uid()
-          const bottom = get().layout.reduce((m, l) => Math.max(m, l.y + l.h), 0)
           set({
-            widgets: [...get().widgets, { id, type, settings }],
-            layout: [...get().layout, { i: id, x: 0, y: bottom, ...size }],
+            widgets: [...get().widgets, { id, type, settings: {} }],
+            layout: [...get().layout, { i: id, ...spot }],
             editMode: true,
             selected: id,
           })
+          return true
+        },
+        setPage: (patch) => {
+          const page = { ...get().page, ...patch }
+          page.screens = Math.max(page.screens, screensFor(get().layout))
+          record('page')
+          set({ page })
+        },
+        fitToPage: () => {
+          const rows = ROWS_PER_SCREEN
+          const placed: Layout[] = []
+          const sorted = [...get().layout].sort((a, b) => a.y - b.y || a.x - b.x)
+          for (const l of sorted) {
+            const fits = l.y + l.h <= rows && !placed.some((p) => overlaps(l, p))
+            const min = { w: Math.min(l.w, 3), h: Math.min(l.h, 3) }
+            const spot = fits ? l : findSpot(placed, l, min, rows) ?? findSpot(placed, l, l, Infinity)!
+            placed.push({ i: l.i, x: spot.x, y: spot.y, w: spot.w, h: spot.h })
+          }
+          record()
+          set({ layout: placed, page: { screens: screensFor(placed) } })
         },
         removeWidget: (id) => {
           record()
@@ -202,11 +264,13 @@ export const useDesign = create<DesignState>()(
           const w = get().widgets.find((x) => x.id === id)
           const l = get().layout.find((x) => x.i === id)
           if (!w || !l) return
+          const spot = findSpot(get().layout, l, { w: Math.min(l.w, 2), h: Math.min(l.h, 2) }, maxRows(get().page))
+          if (!spot) return
           record()
           const nid = uid()
           set({
             widgets: [...get().widgets, { ...w, id: nid, settings: { ...w.settings } }],
-            layout: [...get().layout, { ...l, i: nid, y: l.y + l.h }],
+            layout: [...get().layout, { i: nid, ...spot }],
             selected: nid,
           })
         },
@@ -247,6 +311,7 @@ export const useDesign = create<DesignState>()(
             theme: { ...DEFAULT_DESIGN.theme, ...s.theme },
             background: { ...DEFAULT_DESIGN.background, ...s.background },
             effects: s.effects ?? [],
+            page: { screens: Math.max(s.page?.screens ?? 1, screensFor(s.layout)) },
             selected: undefined,
           })
         },
@@ -259,6 +324,11 @@ export const useDesign = create<DesignState>()(
     {
       name: 'koztech-design',
       partialize: (s): DesignSnapshot => pick(s),
+      // Designs saved before pages existed may extend below one screen.
+      merge: (saved, current) => {
+        const s = { ...current, ...(saved as Partial<DesignSnapshot>) }
+        return { ...s, page: { screens: Math.max(s.page?.screens ?? 1, screensFor(s.layout)) } }
+      },
     },
   ),
 )

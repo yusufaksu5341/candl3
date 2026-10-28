@@ -54,7 +54,7 @@ button { cursor: pointer; }
 .toolbar button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 /* ---------- board & widgets ---------- */
-.board { min-height: calc(100vh - 52px); }
+.board { min-height: calc(100vh - 52px); overflow: hidden; }
 .board.editing { background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px); background-size: 24px 24px; }
 .board-mobile { display: flex; flex-direction: column; padding: 12px 16px; }
 

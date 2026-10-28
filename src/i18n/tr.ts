@@ -29,6 +29,7 @@ export const tr: Dict = {
   'page.title': 'Sayfa',
   'page.screens': 'Sayfa yüksekliği (ekran)',
   'page.noSpace': 'Bu araç için boş yer yok. Sayfayı uzat ya da bazı araçları taşı.',
+  'page.fit': 'Araçları tek ekrana sığdır',
 
   'f.panel': 'Panel arka planı',
   'f.padding': 'İç boşluk',

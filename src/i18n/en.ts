@@ -27,6 +27,7 @@ export const en = {
   'page.title': 'Page',
   'page.screens': 'Page height (screens)',
   'page.noSpace': 'There is no free space for this widget. Make the page taller or move some widgets.',
+  'page.fit': 'Fit widgets to one screen',
 
   'f.panel': 'Panel background',
   'f.padding': 'Padding',

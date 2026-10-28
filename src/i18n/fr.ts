@@ -29,6 +29,7 @@ export const fr: Dict = {
   'page.title': 'Page',
   'page.screens': 'Hauteur de la page (écrans)',
   'page.noSpace': 'Il n’y a pas de place libre pour ce widget. Agrandis la page ou déplace des widgets.',
+  'page.fit': 'Ajuster les widgets à un écran',
 
   'f.panel': 'Fond du panneau',
   'f.padding': 'Marge intérieure',

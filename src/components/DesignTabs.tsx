@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Download, Eye, EyeOff, Plus, RotateCcw, Trash2, Upload } from 'lucide-react'
+import { Download, Eye, EyeOff, Minimize2, Plus, RotateCcw, Trash2, Upload } from 'lucide-react'
 import { COMMON_EFFECT_FIELDS, EFFECTS, effectDef, WIDGET_ANIMS } from '../effects'
 import { useT } from '../i18n'
 import type { Field } from '../lib/fields'
@@ -25,12 +25,22 @@ const THEME_FIELDS: Field[] = [
   { key: 'widgetAnim', label: 'th.widgetAnim', type: 'select', options: WIDGET_ANIMS },
 ]
 
+const PAGE_FIELDS: Field[] = [{ key: 'screens', label: 'page.screens', type: 'range', min: 1, max: 4, step: 0.5 }]
+
 export function ThemeTab() {
+  const t = useT()
   const theme = useDesign((s) => s.theme)
   const setTheme = useDesign((s) => s.setTheme)
+  const page = useDesign((s) => s.page)
+  const setPage = useDesign((s) => s.setPage)
   return (
     <div className="tab">
       <FieldForm fields={THEME_FIELDS} values={theme} onChange={(p) => setTheme(p)} />
+      <h4>{t('page.title')}</h4>
+      <FieldForm fields={PAGE_FIELDS} values={page} onChange={(p) => setPage(p)} />
+      <div className="btn-row" style={{ marginTop: 10 }}>
+        <button onClick={() => useDesign.getState().fitToPage()}><Minimize2 size={14} /> {t('page.fit')}</button>
+      </div>
     </div>
   )
 }
