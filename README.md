@@ -48,6 +48,18 @@ npm install
 npm run dev
 ```
 
+## Canlıya alma
+
+Proje statik bir sitedir: `npm run build` komutu `dist/` klasörünü üretir ve bu klasör herhangi bir statik barındırmaya yüklenebilir. Dosya yolları göreli olduğu için site hem alan adının kökünde hem de alt klasörde çalışır.
+
+**GitHub Pages (hazır):** `main` dalına her push'ta `.github/workflows/deploy.yml` siteyi derleyip yayınlar. İlk kez açmak için depoda *Settings → Pages → Build and deployment → Source* alanını **GitHub Actions** yap. Site `https://yusufaksu5341.github.io/Koztech-Music/` adresinde yayınlanır.
+
+**Vercel / Netlify:** Depoyu içe aktar; Vite otomatik tanınır (build komutu `npm run build`, çıktı klasörü `dist`).
+
+**Kendi alan adın:** Barındırma panelinden alan adını bağla. Paylaşım önizlemesi için `index.html` içindeki `og:image` değerini tam adresle (`https://alanadin.com/icon-512.png`) değiştir.
+
+Telefonda site "Ana ekrana ekle" ile uygulama gibi açılır; kilit ekranından oynat/duraklat ve şarkı geçişi yapılabilir.
+
 ## Teknolojiler
 
 React, TypeScript, Vite, Zustand, react-grid-layout, Web Audio API, Internet Archive API
