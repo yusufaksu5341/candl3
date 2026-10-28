@@ -48,7 +48,10 @@ export const usePlayer = create<PlayerState>()(
         audio.src = track.url
         if (autoplay) {
           engine.ensureContext()
-          audio.play().catch((e) => set({ error: String(e.message ?? e), playing: false, loading: false }))
+          audio.play().catch((e) => {
+            // AbortError just means a newer load/pause superseded this play().
+            if (e.name !== 'AbortError') set({ error: String(e.message ?? e), playing: false, loading: false })
+          })
         }
       }
 
@@ -96,7 +99,7 @@ export const usePlayer = create<PlayerState>()(
           if (!queue.length) return
           if (index < 0 || !audio.src) return load(Math.max(index, 0))
           engine.ensureContext()
-          if (audio.paused) void audio.play().catch((e) => set({ error: String(e.message ?? e) }))
+          if (audio.paused) void audio.play().catch((e) => { if (e.name !== 'AbortError') set({ error: String(e.message ?? e) }) })
           else audio.pause()
         },
         next: () => {

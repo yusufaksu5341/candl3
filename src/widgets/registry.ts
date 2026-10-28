@@ -1,4 +1,7 @@
-import { Clock, Image, StickyNote, Type } from 'lucide-react'
+import { Clock, Disc3, Image, Library, ListMusic, PlayCircle, StickyNote, Type } from 'lucide-react'
+import {
+  LibraryWidget, libraryDefaults, NowPlayingWidget, nowPlayingDefaults, PlayerWidget, playerDefaults, QueueWidget, queueDefaults,
+} from './music'
 import { opts } from '../lib/fields'
 import type { Field } from '../lib/fields'
 import {
@@ -19,6 +22,39 @@ export const COMMON_FIELDS: Field[] = [
 ]
 
 export const WIDGETS: WidgetDef[] = [
+  {
+    type: 'player', name: 'Oynatıcı', description: 'Oynat, atla, ilerleme ve ses', icon: PlayCircle,
+    size: { w: 10, h: 5 }, minSize: { w: 5, h: 3 }, defaults: playerDefaults, component: PlayerWidget,
+    fields: [
+      { key: 'showTrack', label: 'Şarkı bilgisi', type: 'toggle' },
+      { key: 'showVolume', label: 'Ses kontrolü', type: 'toggle' },
+      { key: 'showExtras', label: 'Karıştır / tekrar', type: 'toggle' },
+      { key: 'big', label: 'Büyük butonlar', type: 'toggle' },
+    ],
+  },
+  {
+    type: 'nowplaying', name: 'Şimdi Çalan', description: 'Kapak, şarkı ve sanatçı', icon: Disc3,
+    size: { w: 7, h: 10 }, defaults: nowPlayingDefaults, component: NowPlayingWidget,
+    fields: [
+      { key: 'showCover', label: 'Kapak', type: 'toggle' },
+      { key: 'round', label: 'Yuvarlak kapak', type: 'toggle' },
+      { key: 'align', label: 'Yerleşim', type: 'select', options: opts(['center', 'Dikey'], ['row', 'Yatay']) },
+      { key: 'titleSize', label: 'Başlık boyutu', type: 'range', min: 12, max: 48 },
+    ],
+  },
+  {
+    type: 'library', name: 'Kütüphane', description: 'Internet Archive araması ve kendi dosyaların', icon: Library,
+    size: { w: 7, h: 18 }, minSize: { w: 4, h: 8 }, defaults: libraryDefaults, component: LibraryWidget,
+    fields: [
+      { key: 'showGenres', label: 'Tür etiketleri', type: 'toggle' },
+      { key: 'grid', label: 'Izgara görünümü', type: 'toggle' },
+    ],
+  },
+  {
+    type: 'queue', name: 'Çalma Sırası', description: 'Sıradaki parçalar', icon: ListMusic,
+    size: { w: 7, h: 11 }, minSize: { w: 4, h: 5 }, defaults: queueDefaults, component: QueueWidget,
+    fields: [{ key: 'showCovers', label: 'Kapaklar', type: 'toggle' }],
+  },
   {
     type: 'clock', name: 'Saat', description: 'Saat ve tarih', icon: Clock,
     size: { w: 6, h: 5 }, defaults: clockDefaults, component: ClockWidget,
