@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./vite.config.ts"],"version":"5.8.3"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/api/archive.ts","./src/audio/engine.ts","./src/store/player.ts","./vite.config.ts"],"version":"5.8.3"}
