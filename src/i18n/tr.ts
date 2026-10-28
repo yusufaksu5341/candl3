@@ -197,7 +197,7 @@ export const tr: Dict = {
   'presets.resetBtn': 'Her şeyi sıfırla',
   'presets.resetLayout': 'Düzeni sıfırla',
   'presets.confirmLayout': 'Başlangıç araçlarına ve düzenine dönülsün mü? Renklerin ve arka planın kalır.',
-  'presets.invalid': 'Bu dosya geçerli bir Koztech tasarımı değil.',
+  'presets.invalid': 'Bu dosya geçerli bir candl3 tasarımı değil.',
   'presets.confirmReset': 'Her şey varsayılana dönsün mü? Tasarım, ekolayzer, ses ve çalma sırası sıfırlanacak.',
   'preset.night': 'Gece Moru',
   'preset.neon': 'Neon Şehir',

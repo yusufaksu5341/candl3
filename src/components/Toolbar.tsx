@@ -16,7 +16,7 @@ export default function Toolbar() {
   const { undo, redo } = useDesign.getState()
   return (
     <div className={`toolbar ${panelOpen ? 'shifted' : ''}`}>
-      <span className="brand">Koztech<b>Music</b></span>
+      <span className="brand">candl<b>3</b></span>
       <label className="lang" title={t('app.language')}>
         <Globe size={15} />
         <select value={lang} onChange={(e) => setLang(e.target.value as Lang)}>

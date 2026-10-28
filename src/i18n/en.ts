@@ -195,7 +195,7 @@ export const en = {
   'presets.resetBtn': 'Reset everything',
   'presets.resetLayout': 'Reset layout',
   'presets.confirmLayout': 'Restore the starting widgets and layout? Your colors and background stay.',
-  'presets.invalid': 'This file is not a valid Koztech design.',
+  'presets.invalid': 'This file is not a valid candl3 design.',
   'presets.confirmReset': 'Reset everything to default? Design, equalizer, volume and queue will be reset.',
   'preset.night': 'Night Purple',
   'preset.neon': 'Neon City',

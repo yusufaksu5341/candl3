@@ -351,6 +351,7 @@ export const useDesign = create<DesignState>()(
       }
     },
     {
+      // Storage key predates the candl3 name; kept so saved designs survive.
       name: 'koztech-design',
       partialize: (s): DesignSnapshot => pick(s),
       // Designs saved before pages existed may extend below one screen.

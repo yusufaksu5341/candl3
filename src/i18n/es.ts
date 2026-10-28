@@ -197,7 +197,7 @@ export const es: Dict = {
   'presets.resetBtn': 'Restablecer todo',
   'presets.resetLayout': 'Restablecer disposición',
   'presets.confirmLayout': '¿Volver a los widgets y la disposición iniciales? Tus colores y fondo se mantienen.',
-  'presets.invalid': 'Este archivo no es un diseño válido de Koztech.',
+  'presets.invalid': 'Este archivo no es un diseño válido de candl3.',
   'presets.confirmReset': '¿Restablecer todo? Se restablecerán el diseño, el ecualizador, el volumen y la cola.',
   'preset.night': 'Púrpura nocturno',
   'preset.neon': 'Ciudad neón',

@@ -158,7 +158,7 @@ export function PresetsTab() {
     const blob = new Blob([JSON.stringify(snapshot(), null, 2)], { type: 'application/json' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    a.download = 'koztech-design.json'
+    a.download = 'candl3-design.json'
     a.click()
     URL.revokeObjectURL(a.href)
   }

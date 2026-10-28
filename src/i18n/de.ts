@@ -197,7 +197,7 @@ export const de: Dict = {
   'presets.resetBtn': 'Alles zurücksetzen',
   'presets.resetLayout': 'Anordnung zurücksetzen',
   'presets.confirmLayout': 'Start-Widgets und -Anordnung wiederherstellen? Farben und Hintergrund bleiben.',
-  'presets.invalid': 'Diese Datei ist kein gültiges Koztech-Design.',
+  'presets.invalid': 'Diese Datei ist kein gültiges candl3-Design.',
   'presets.confirmReset': 'Alles auf Standard zurücksetzen? Design, Equalizer, Lautstärke und Warteschlange werden zurückgesetzt.',
   'preset.night': 'Nachtlila',
   'preset.neon': 'Neonstadt',

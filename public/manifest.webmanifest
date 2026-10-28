@@ -1,6 +1,6 @@
 {
-  "name": "Koztech Music",
-  "short_name": "Koztech",
+  "name": "candl3",
+  "short_name": "candl3",
   "description": "Customizable music page with free music from the Internet Archive.",
   "start_url": "./",
   "scope": "./",

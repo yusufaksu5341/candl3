@@ -1,4 +1,4 @@
-# Koztech Music
+# candl3
 
 Tamamen özelleştirilebilir bir müzik dinleme sayfası. Müzikler [Internet Archive](https://archive.org) üzerinden çekilir; kullanıcı sayfasını araçlar (widget), arka planlar ve animasyonlarla dilediği gibi tasarlar.
 

@@ -44,8 +44,8 @@ button { cursor: pointer; }
   transition: right .25s ease;
 }
 .toolbar.shifted { right: 352px; }
-.toolbar .brand { margin-right: 6px; font-size: 13px; letter-spacing: .3px; opacity: .75; }
-.toolbar .brand b { color: var(--accent); margin-left: 2px; }
+.toolbar .brand { margin-right: 6px; font-size: 16px; font-weight: 700; letter-spacing: .2px; opacity: .92; }
+.toolbar .brand b { color: var(--accent); }
 .toolbar button {
   display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px;
   border-radius: 999px; border: 1px solid var(--ui-line);
