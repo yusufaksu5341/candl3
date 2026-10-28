@@ -53,7 +53,11 @@ type DesignState = DesignSnapshot & {
   panelOpen: boolean
   panelTab: string
   selected?: string
+  past: DesignSnapshot[]
+  future: DesignSnapshot[]
 
+  undo: () => void
+  redo: () => void
   setEditMode: (v: boolean) => void
   openPanel: (tab?: string) => void
   closePanel: () => void
@@ -121,80 +125,144 @@ export const DEFAULT_DESIGN: DesignSnapshot = {
   effects: [{ id: 'fx-stars', type: 'stars', enabled: true, settings: {} }],
 }
 
+const HISTORY_LIMIT = 100
+// Rapid edits to the same thing (slider drags, typing) collapse into one undo step.
+const COALESCE_MS = 700
+let lastKey: string | undefined
+let lastAt = 0
+
+function pick(s: DesignSnapshot): DesignSnapshot {
+  const { widgets, layout, theme, background, effects } = s
+  return structuredClone({ widgets, layout, theme, background, effects })
+}
+
 export const useDesign = create<DesignState>()(
   persist(
-    (set, get) => ({
-      ...structuredClone(DEFAULT_DESIGN),
-      editMode: false,
-      panelOpen: false,
-      panelTab: 'widgets',
-      selected: undefined,
+    (set, get) => {
+      /** Saves the current design onto the undo stack before a change. */
+      const record = (key?: string) => {
+        const now = Date.now()
+        if (key && key === lastKey && now - lastAt < COALESCE_MS) { lastAt = now; return }
+        lastKey = key
+        lastAt = now
+        set({ past: [...get().past, pick(get())].slice(-HISTORY_LIMIT), future: [] })
+      }
 
-      setEditMode: (editMode) => set({ editMode, selected: editMode ? get().selected : undefined }),
-      openPanel: (tab) => set({ panelOpen: true, panelTab: tab ?? get().panelTab }),
-      closePanel: () => set({ panelOpen: false }),
-      setLayout: (layout) => set({ layout }),
-      addWidget: (type, size, settings) => {
-        const id = uid()
-        const bottom = get().layout.reduce((m, l) => Math.max(m, l.y + l.h), 0)
-        set({
-          widgets: [...get().widgets, { id, type, settings }],
-          layout: [...get().layout, { i: id, x: 0, y: bottom, ...size }],
-          editMode: true,
-          selected: id,
-        })
-      },
-      removeWidget: (id) =>
-        set({
-          widgets: get().widgets.filter((w) => w.id !== id),
-          layout: get().layout.filter((l) => l.i !== id),
-          selected: get().selected === id ? undefined : get().selected,
-        }),
-      duplicateWidget: (id) => {
-        const w = get().widgets.find((x) => x.id === id)
-        const l = get().layout.find((x) => x.i === id)
-        if (!w || !l) return
-        const nid = uid()
-        set({
-          widgets: [...get().widgets, { ...w, id: nid, settings: { ...w.settings } }],
-          layout: [...get().layout, { ...l, i: nid, y: l.y + l.h }],
-          selected: nid,
-        })
-      },
-      updateWidget: (id, patch) =>
-        set({ widgets: get().widgets.map((w) => (w.id === id ? { ...w, settings: { ...w.settings, ...patch } } : w)) }),
-      resetWidget: (id) => set({ widgets: get().widgets.map((w) => (w.id === id ? { ...w, settings: {} } : w)) }),
-      selectWidget: (selected) => set({ selected, panelOpen: selected ? true : get().panelOpen, panelTab: selected ? 'selected' : get().panelTab }),
-      setTheme: (patch) => set({ theme: { ...get().theme, ...patch } }),
-      setBackground: (patch) => set({ background: { ...get().background, ...patch } }),
-      addEffect: (type, settings) => set({ effects: [...get().effects, { id: uid(), type, enabled: true, settings }] }),
-      updateEffect: (id, patch) => set({ effects: get().effects.map((e) => (e.id === id ? { ...e, ...patch } : e)) }),
-      removeEffect: (id) => set({ effects: get().effects.filter((e) => e.id !== id) }),
-      applySnapshot: (s) =>
-        set({
-          widgets: s.widgets,
-          layout: s.layout,
-          theme: { ...DEFAULT_DESIGN.theme, ...s.theme },
-          background: { ...DEFAULT_DESIGN.background, ...s.background },
-          effects: s.effects ?? [],
-          selected: undefined,
-        }),
-      applyStyle: (theme, background, effects) => set({ theme, background, effects }),
-    }),
+      return {
+        ...structuredClone(DEFAULT_DESIGN),
+        editMode: false,
+        panelOpen: false,
+        panelTab: 'widgets',
+        selected: undefined,
+        past: [],
+        future: [],
+
+        undo: () => {
+          const { past, future } = get()
+          if (!past.length) return
+          lastKey = undefined
+          set({ ...past[past.length - 1], past: past.slice(0, -1), future: [pick(get()), ...future] })
+        },
+        redo: () => {
+          const { past, future } = get()
+          if (!future.length) return
+          lastKey = undefined
+          set({ ...future[0], future: future.slice(1), past: [...past, pick(get())] })
+        },
+
+        setEditMode: (editMode) => set({ editMode, selected: editMode ? get().selected : undefined }),
+        openPanel: (tab) => set({ panelOpen: true, panelTab: tab ?? get().panelTab }),
+        closePanel: () => set({ panelOpen: false }),
+        setLayout: (layout) => {
+          const norm = (l: Layout[]) => JSON.stringify(l.map(({ i, x, y, w, h }) => [i, x, y, w, h]).sort())
+          if (norm(layout) === norm(get().layout)) return
+          record('layout')
+          set({ layout })
+        },
+        addWidget: (type, size, settings) => {
+          record()
+          const id = uid()
+          const bottom = get().layout.reduce((m, l) => Math.max(m, l.y + l.h), 0)
+          set({
+            widgets: [...get().widgets, { id, type, settings }],
+            layout: [...get().layout, { i: id, x: 0, y: bottom, ...size }],
+            editMode: true,
+            selected: id,
+          })
+        },
+        removeWidget: (id) => {
+          record()
+          set({
+            widgets: get().widgets.filter((w) => w.id !== id),
+            layout: get().layout.filter((l) => l.i !== id),
+            selected: get().selected === id ? undefined : get().selected,
+          })
+        },
+        duplicateWidget: (id) => {
+          const w = get().widgets.find((x) => x.id === id)
+          const l = get().layout.find((x) => x.i === id)
+          if (!w || !l) return
+          record()
+          const nid = uid()
+          set({
+            widgets: [...get().widgets, { ...w, id: nid, settings: { ...w.settings } }],
+            layout: [...get().layout, { ...l, i: nid, y: l.y + l.h }],
+            selected: nid,
+          })
+        },
+        updateWidget: (id, patch) => {
+          record(`widget:${id}:${Object.keys(patch).join()}`)
+          set({ widgets: get().widgets.map((w) => (w.id === id ? { ...w, settings: { ...w.settings, ...patch } } : w)) })
+        },
+        resetWidget: (id) => {
+          record()
+          set({ widgets: get().widgets.map((w) => (w.id === id ? { ...w, settings: {} } : w)) })
+        },
+        selectWidget: (selected) => set({ selected, panelOpen: selected ? true : get().panelOpen, panelTab: selected ? 'selected' : get().panelTab }),
+        setTheme: (patch) => {
+          record(`theme:${Object.keys(patch).join()}`)
+          set({ theme: { ...get().theme, ...patch } })
+        },
+        setBackground: (patch) => {
+          record(`bg:${Object.keys(patch).join()}`)
+          set({ background: { ...get().background, ...patch } })
+        },
+        addEffect: (type, settings) => {
+          record()
+          set({ effects: [...get().effects, { id: uid(), type, enabled: true, settings }] })
+        },
+        updateEffect: (id, patch) => {
+          record(`fx:${id}:${Object.keys(patch.settings ?? patch).join()}`)
+          set({ effects: get().effects.map((e) => (e.id === id ? { ...e, ...patch } : e)) })
+        },
+        removeEffect: (id) => {
+          record()
+          set({ effects: get().effects.filter((e) => e.id !== id) })
+        },
+        applySnapshot: (s) => {
+          record()
+          set({
+            widgets: s.widgets,
+            layout: s.layout,
+            theme: { ...DEFAULT_DESIGN.theme, ...s.theme },
+            background: { ...DEFAULT_DESIGN.background, ...s.background },
+            effects: s.effects ?? [],
+            selected: undefined,
+          })
+        },
+        applyStyle: (theme, background, effects) => {
+          record()
+          set({ theme, background, effects })
+        },
+      }
+    },
     {
       name: 'koztech-design',
-      partialize: (s): DesignSnapshot => ({
-        widgets: s.widgets,
-        layout: s.layout,
-        theme: s.theme,
-        background: s.background,
-        effects: s.effects,
-      }),
+      partialize: (s): DesignSnapshot => pick(s),
     },
   ),
 )
 
 export function snapshot(): DesignSnapshot {
-  const { widgets, layout, theme, background, effects } = useDesign.getState()
-  return structuredClone({ widgets, layout, theme, background, effects })
+  return pick(useDesign.getState())
 }

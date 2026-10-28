@@ -1,4 +1,4 @@
-import { Check, Globe, Palette, Pencil } from 'lucide-react'
+import { Check, Globe, Palette, Pencil, Redo2, Undo2 } from 'lucide-react'
 import { LANGS, useLang, useT } from '../i18n'
 import type { Lang } from '../i18n'
 import { useDesign } from '../store/design'
@@ -11,6 +11,9 @@ export default function Toolbar() {
   const setEditMode = useDesign((s) => s.setEditMode)
   const openPanel = useDesign((s) => s.openPanel)
   const panelOpen = useDesign((s) => s.panelOpen)
+  const canUndo = useDesign((s) => s.past.length > 0)
+  const canRedo = useDesign((s) => s.future.length > 0)
+  const { undo, redo } = useDesign.getState()
   return (
     <div className={`toolbar ${panelOpen ? 'shifted' : ''}`}>
       <span className="brand">Koztech<b>Music</b></span>
@@ -20,6 +23,10 @@ export default function Toolbar() {
           {LANGS.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
         </select>
       </label>
+      <div className="history">
+        <button className="icon-btn" onClick={undo} disabled={!canUndo} title={t('app.undo')}><Undo2 size={16} /></button>
+        <button className="icon-btn" onClick={redo} disabled={!canRedo} title={t('app.redo')}><Redo2 size={16} /></button>
+      </div>
       <button className={editMode ? 'primary' : ''} onClick={() => setEditMode(!editMode)}>
         {editMode ? <Check size={16} /> : <Pencil size={16} />}
         <span>{t(editMode ? 'app.done' : 'app.edit')}</span>

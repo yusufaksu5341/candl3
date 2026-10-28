@@ -46,6 +46,23 @@ function useBeatVar() {
   }, [])
 }
 
+/** Ctrl/Cmd+Z undoes, Ctrl/Cmd+Shift+Z or Ctrl+Y redoes; text fields keep their own undo. */
+function useHistoryShortcuts() {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey)) return
+      const el = e.target as HTMLElement
+      if (el.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName)) return
+      const key = e.key.toLowerCase()
+      const { undo, redo } = useDesign.getState()
+      if (key === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
+      else if ((key === 'z' && e.shiftKey) || key === 'y') { e.preventDefault(); redo() }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+}
+
 export default function App() {
   const theme = useDesign((s) => s.theme)
   const panelOpen = useDesign((s) => s.panelOpen)
@@ -53,6 +70,7 @@ export default function App() {
   useEffect(() => { document.documentElement.lang = lang }, [lang])
   useThemeVars(theme)
   useBeatVar()
+  useHistoryShortcuts()
 
   return (
     <div className={`app ${panelOpen ? 'with-panel' : ''}`}>

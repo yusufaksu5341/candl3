@@ -280,3 +280,7 @@ body.no-shadow .widget.has-panel { box-shadow: none; }
 }
 .toolbar .lang select { border: 0; outline: 0; background: transparent; padding-right: 4px; cursor: pointer; }
 .toolbar .lang option { background: #1b1b23; }
+
+.toolbar .history { display: inline-flex; border: 1px solid var(--ui-line); border-radius: 999px; background: rgba(18, 18, 24, 0.7); backdrop-filter: blur(10px); }
+.toolbar .history .icon-btn { border: 0; background: transparent; width: 34px; padding: 0; justify-content: center; backdrop-filter: none; }
+.toolbar .history .icon-btn:disabled { opacity: .3; cursor: default; }
