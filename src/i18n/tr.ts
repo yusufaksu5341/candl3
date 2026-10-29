@@ -199,6 +199,7 @@ export const tr: Dict = {
   'presets.confirmLayout': 'Başlangıç araçlarına ve düzenine dönülsün mü? Renklerin ve arka planın kalır.',
   'presets.invalid': 'Bu dosya geçerli bir candl3 tasarımı değil.',
   'presets.confirmReset': 'Her şey varsayılana dönsün mü? Tasarım, ekolayzer, ses ve çalma sırası sıfırlanacak.',
+  'preset.default': 'Varsayılan',
   'preset.night': 'Gece Moru',
   'preset.neon': 'Neon Şehir',
   'preset.lofi': 'Lo-fi Oda',

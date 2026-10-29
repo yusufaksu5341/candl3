@@ -74,7 +74,7 @@ export function EqualizerWidget({ settings: s }: WidgetProps<typeof eqDefaults>)
 
 /* ---------------- Spectrum bars ---------------- */
 
-export const barsDefaults = { count: 48, color: '', color2: '#ff6ec7', gradient: true, mirror: false, rounded: true, gap: 3, peaks: true }
+export const barsDefaults = { count: 48, color: '', color2: '', gradient: false, mirror: false, rounded: true, gap: 3, peaks: true }
 
 export function BarsWidget({ settings: s }: WidgetProps<typeof barsDefaults>) {
   const color = useColor(s.color)
@@ -86,7 +86,7 @@ export function BarsWidget({ settings: s }: WidgetProps<typeof barsDefaults>) {
     if (s.gradient) {
       const g = ctx.createLinearGradient(0, h, 0, 0)
       g.addColorStop(0, color)
-      g.addColorStop(1, s.color2)
+      g.addColorStop(1, s.color2 || color)
       fill = g
     }
     ctx.fillStyle = fill
@@ -140,7 +140,7 @@ export function WaveWidget({ settings: s }: WidgetProps<typeof waveDefaults>) {
 
 /* ---------------- Music circle ---------------- */
 
-export const circleDefaults = { count: 96, color: '', color2: '#ff6ec7', cover: true, rotate: true, style: 'bars', pulse: true }
+export const circleDefaults = { count: 96, color: '', color2: '', cover: true, rotate: true, style: 'bars', pulse: true }
 
 export function CircleWidget({ settings: s }: WidgetProps<typeof circleDefaults>) {
   const color = useColor(s.color)
@@ -160,7 +160,7 @@ export function CircleWidget({ settings: s }: WidgetProps<typeof circleDefaults>
     ctx.rotate(angle.current)
     const g = ctx.createLinearGradient(-base - maxLen, 0, base + maxLen, 0)
     g.addColorStop(0, color)
-    g.addColorStop(1, s.color2)
+    g.addColorStop(1, s.color2 || color)
     ctx.strokeStyle = g
     ctx.fillStyle = g
     ctx.lineCap = 'round'

@@ -11,9 +11,15 @@ export type StylePreset = {
 /** Style presets change look and effects but keep the user's widgets and layout. */
 export const STYLE_PRESETS: StylePreset[] = [
   {
-    id: 'night',
+    id: 'default',
     theme: DEFAULT_DESIGN.theme,
     background: DEFAULT_DESIGN.background,
+    effects: [],
+  },
+  {
+    id: 'night',
+    theme: { accent: '#8b7bff', text: '#f2f2f5', panel: '#14141b', panelOpacity: 0.72, blur: 14, radius: 16, font: 'Inter', widgetAnim: 'none', border: true, shadow: true },
+    background: { type: 'gradient', from: '#0d0d16', to: '#1d1636', angle: 140, animated: false, dim: 0.2, beatZoom: false },
     effects: [{ type: 'stars', settings: {} }],
   },
   {

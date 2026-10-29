@@ -199,6 +199,7 @@ export const es: Dict = {
   'presets.confirmLayout': '¿Volver a los widgets y la disposición iniciales? Tus colores y fondo se mantienen.',
   'presets.invalid': 'Este archivo no es un diseño válido de candl3.',
   'presets.confirmReset': '¿Restablecer todo? Se restablecerán el diseño, el ecualizador, el volumen y la cola.',
+  'preset.default': 'Predeterminado',
   'preset.night': 'Púrpura nocturno',
   'preset.neon': 'Ciudad neón',
   'preset.lofi': 'Habitación lo-fi',

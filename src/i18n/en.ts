@@ -197,6 +197,7 @@ export const en = {
   'presets.confirmLayout': 'Restore the starting widgets and layout? Your colors and background stay.',
   'presets.invalid': 'This file is not a valid candl3 design.',
   'presets.confirmReset': 'Reset everything to default? Design, equalizer, volume and queue will be reset.',
+  'preset.default': 'Default',
   'preset.night': 'Night Purple',
   'preset.neon': 'Neon City',
   'preset.lofi': 'Lo-fi Room',

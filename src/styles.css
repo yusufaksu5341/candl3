@@ -1,12 +1,12 @@
 :root {
-  --accent: #8b7bff;
-  --accent-rgb: 139, 123, 255;
-  --on-accent: #ffffff;
-  --text: #f2f2f5;
-  --text-rgb: 242, 242, 245;
-  --panel: rgba(20, 20, 27, 0.72);
-  --blur: 14px;
-  --radius: 16px;
+  --accent: #ededed;
+  --accent-rgb: 237, 237, 237;
+  --on-accent: #111111;
+  --text: #ededed;
+  --text-rgb: 237, 237, 237;
+  --panel: rgba(17, 17, 17, 1);
+  --blur: 0px;
+  --radius: 12px;
   --font: 'Inter', system-ui, sans-serif;
   --beat: 0;
   --ui-bg: #121218;
@@ -16,7 +16,7 @@
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; margin: 0; }
 body {
-  background: #0b0b0f;
+  background: #000;
   color: var(--text);
   font-family: var(--font);
   font-size: 14px;
