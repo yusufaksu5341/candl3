@@ -11,7 +11,7 @@ export const fr: Dict = {
 
   'panel.title': 'Crée ta page',
   'panel.close': 'Fermer',
-  'panel.widgetsHint': 'Clique sur un widget pour l’ajouter à ta page. En mode édition, tu peux le déplacer et le redimensionner.',
+  'panel.widgetsHint': 'Clique sur un widget pour l’ajouter, ou fais-le glisser sur ta page pour le déposer où tu veux. En mode édition, tu peux le déplacer et le redimensionner.',
   'panel.selectHint': 'En mode édition, clique sur un widget pour modifier ses réglages.',
   'panel.appearance': 'Apparence',
   'panel.reset': 'Réinitialiser',

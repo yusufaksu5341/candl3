@@ -7,9 +7,11 @@ import { useIsMobile } from '../lib/media'
 import { COLS, maxRows, mobileOrdered, ROWS_PER_SCREEN, useDesign } from '../store/design'
 import type { WidgetInstance } from '../store/design'
 import { COMMON_DEFAULTS, widgetDef } from '../widgets/registry'
+import { draggingWidget, setDraggingWidget } from '../lib/widgetDrag'
 
 const Grid = WidthProvider(GridLayout)
 const TOOLBAR_H = 52
+const DROP_ID = '__dropping-elem__'
 
 function useViewportHeight() {
   const [h, setH] = useState(() => window.innerHeight)
@@ -36,7 +38,7 @@ function WidgetFrame({ w, mobile }: { w: WidgetInstance; mobile?: boolean }) {
   const cls = ['widget', settings.panel ? 'has-panel' : 'no-panel', `anim-${anim}`, selected && 'selected'].filter(Boolean).join(' ')
 
   return (
-    <div className={cls} onPointerDown={() => editMode && selectWidget(w.id)}>
+    <div className={cls} data-widget={w.id} onPointerDown={() => editMode && selectWidget(w.id)}>
       <div className="widget-body" style={{ padding: settings.padding }}>
         <ErrorBoundary><Comp id={w.id} settings={settings} /></ErrorBoundary>
       </div>
@@ -55,6 +57,7 @@ function WidgetFrame({ w, mobile }: { w: WidgetInstance; mobile?: boolean }) {
 }
 
 export default function Board() {
+  const t = useT()
   const widgets = useDesign((s) => s.widgets)
   const layout = useDesign((s) => s.layout)
   const gap = useDesign((s) => s.theme.gap)
@@ -108,7 +111,18 @@ export default function Board() {
       compactType={null}
       preventCollision
       resizeHandles={['se', 'e', 's']}
-      onLayoutChange={(l) => setLayout(l.map(({ i, x, y, w, h }) => ({ i, x, y, w, h })))}
+      isDroppable
+      onDropDragOver={() => {
+        const def = draggingWidget ? widgetDef(draggingWidget) : undefined
+        return def ? { w: def.size.w, h: def.size.h } : false
+      }}
+      onDrop={(_l, item) => {
+        const def = draggingWidget ? widgetDef(draggingWidget) : undefined
+        setDraggingWidget()
+        if (!def || !item) return
+        if (!useDesign.getState().dropWidget(def.type, item.x, item.y, def.size, def.minSize)) alert(t('page.noSpace'))
+      }}
+      onLayoutChange={(l) => setLayout(l.filter((x) => x.i !== DROP_ID).map(({ i, x, y, w, h }) => ({ i, x, y, w, h })))}
     >
       {widgets.map((w) => (
         <div key={w.id}>

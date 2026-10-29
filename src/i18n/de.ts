@@ -11,7 +11,7 @@ export const de: Dict = {
 
   'panel.title': 'Gestalte deine Seite',
   'panel.close': 'Schließen',
-  'panel.widgetsHint': 'Klicke auf ein Widget, um es deiner Seite hinzuzufügen. Im Bearbeitungsmodus kannst du es verschieben und skalieren.',
+  'panel.widgetsHint': 'Klicke auf ein Widget, um es hinzuzufügen, oder ziehe es genau dorthin auf deiner Seite, wo du es haben willst. Im Bearbeitungsmodus kannst du es verschieben und skalieren.',
   'panel.selectHint': 'Klicke im Bearbeitungsmodus auf ein Widget, um seine Einstellungen zu ändern.',
   'panel.appearance': 'Darstellung',
   'panel.reset': 'Zurücksetzen',

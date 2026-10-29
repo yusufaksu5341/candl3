@@ -69,6 +69,17 @@ export function findSpot(layout: Layout[], size: Size, min: Size, rows: number) 
   return undefined
 }
 
+/** Fits `size` with its top-left at (x, y), shrinking toward `min`; falls back to any free slot. */
+export function spotAt(layout: Layout[], x: number, y: number, size: Size, min: Size, rows: number) {
+  for (let h = Math.min(size.h, rows - y); h >= min.h; h--) {
+    for (let w = size.w; w >= min.w; w--) {
+      const r = { x: Math.max(0, Math.min(x, COLS - w)), y, w, h }
+      if (!layout.some((l) => overlaps(r, l))) return r
+    }
+  }
+  return findSpot(layout, size, min, rows)
+}
+
 /** Smallest page (in half screens) that still holds every widget. */
 export function screensFor(layout: Layout[]) {
   const bottom = layout.reduce((m, l) => Math.max(m, l.y + l.h), 0)
@@ -107,6 +118,8 @@ type DesignState = DesignSnapshot & {
   setLayout: (layout: Layout[]) => void
   /** Returns false when the page has no room left for the widget. */
   addWidget: (type: string, size: Size, min?: Size) => boolean
+  /** Adds a widget dropped onto the page at grid cell (x, y). */
+  dropWidget: (type: string, x: number, y: number, size: Size, min?: Size) => boolean
   setPage: (patch: Partial<Page>) => void
   /** Moves widgets that are off the first screen into free space on it, shrinking them if needed. */
   fitToPage: () => void
@@ -203,6 +216,18 @@ export const useDesign = create<DesignState>()(
         set({ past: [...get().past, pick(get())].slice(-HISTORY_LIMIT), future: [] })
       }
 
+      const place = (type: string, spot: Size & { x: number; y: number }) => {
+        record()
+        const id = uid()
+        set({
+          widgets: [...get().widgets, { id, type, settings: {} }],
+          layout: [...get().layout, { i: id, ...spot }],
+          editMode: true,
+          selected: id,
+        })
+        return true
+      }
+
       return {
         ...structuredClone(DEFAULT_DESIGN),
         editMode: false,
@@ -236,16 +261,11 @@ export const useDesign = create<DesignState>()(
         },
         addWidget: (type, size, min = { w: 2, h: 2 }) => {
           const spot = findSpot(get().layout, size, min, maxRows(get().page))
-          if (!spot) return false
-          record()
-          const id = uid()
-          set({
-            widgets: [...get().widgets, { id, type, settings: {} }],
-            layout: [...get().layout, { i: id, ...spot }],
-            editMode: true,
-            selected: id,
-          })
-          return true
+          return spot ? place(type, spot) : false
+        },
+        dropWidget: (type, x, y, size, min = { w: 2, h: 2 }) => {
+          const spot = spotAt(get().layout, x, y, size, min, maxRows(get().page))
+          return spot ? place(type, spot) : false
         },
         setPage: (patch) => {
           const page = { ...get().page, ...patch }

@@ -9,7 +9,7 @@ export const en = {
 
   'panel.title': 'Design your page',
   'panel.close': 'Close',
-  'panel.widgetsHint': 'Click a widget to add it to your page. In edit mode you can drag and resize it.',
+  'panel.widgetsHint': 'Click a widget to add it, or drag it onto your page to drop it exactly where you want. In edit mode you can move and resize it.',
   'panel.selectHint': 'Click a widget in edit mode to change its settings.',
   'panel.appearance': 'Appearance',
   'panel.reset': 'Reset to default',

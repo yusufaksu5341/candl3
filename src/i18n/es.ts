@@ -11,7 +11,7 @@ export const es: Dict = {
 
   'panel.title': 'Diseña tu página',
   'panel.close': 'Cerrar',
-  'panel.widgetsHint': 'Haz clic en un widget para añadirlo a tu página. En modo edición puedes arrastrarlo y cambiar su tamaño.',
+  'panel.widgetsHint': 'Haz clic en un widget para añadirlo, o arrástralo a tu página para soltarlo donde quieras. En modo edición puedes moverlo y cambiar su tamaño.',
   'panel.selectHint': 'En modo edición, haz clic en un widget para cambiar su configuración.',
   'panel.appearance': 'Apariencia',
   'panel.reset': 'Restablecer',

@@ -134,6 +134,7 @@ body.no-shadow .widget.has-panel { box-shadow: none; }
   display: flex; align-items: center; gap: 12px; text-align: left; padding: 10px 12px;
   border-radius: 10px; border: 1px solid var(--ui-line); background: #17171e;
 }
+.widget-card[draggable] { cursor: grab; }
 .widget-card:hover { border-color: rgba(var(--accent-rgb), .6); }
 .widget-card > span { flex: 1; display: flex; flex-direction: column; gap: 2px; }
 .widget-card small { font-size: 12px; }

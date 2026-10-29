@@ -7,16 +7,35 @@ import { useDesign } from '../store/design'
 import { COMMON_DEFAULTS, COMMON_FIELDS, WIDGETS, widgetDef } from '../widgets/registry'
 import { BackgroundTab, EffectsTab, PresetsTab, ThemeTab } from './DesignTabs'
 import FieldForm from './FieldForm'
+import { setDraggingWidget } from '../lib/widgetDrag'
 
 function WidgetsTab() {
   const t = useT()
   const addWidget = useDesign((s) => s.addWidget)
+  const setEditMode = useDesign((s) => s.setEditMode)
   return (
     <div className="tab">
       <p className="muted small">{t('panel.widgetsHint')}</p>
       <div className="widget-list">
         {WIDGETS.map((d) => (
-          <button key={d.type} className="widget-card" onClick={() => { if (!addWidget(d.type, d.size, d.minSize)) alert(t('page.noSpace')) }}>
+          <button
+            key={d.type}
+            className="widget-card"
+            draggable
+            onDragStart={(e) => {
+              e.dataTransfer.setData('text/plain', d.type)
+              e.dataTransfer.effectAllowed = 'copy'
+              setDraggingWidget(d.type)
+              // Show widget outlines so it's clear where it can land.
+              setEditMode(true)
+            }}
+            onDragEnd={() => setDraggingWidget()}
+            onClick={() => {
+              if (!addWidget(d.type, d.size, d.minSize)) return alert(t('page.noSpace'))
+              // The free spot may be off screen on long pages, so bring the new widget into view.
+              setTimeout(() => document.querySelector(`[data-widget="${useDesign.getState().selected}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100)
+            }}
+          >
             <d.icon size={18} />
             <span>
               <strong>{t(`w.${d.type}`)}</strong>

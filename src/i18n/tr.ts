@@ -11,7 +11,7 @@ export const tr: Dict = {
 
   'panel.title': 'Sayfanı tasarla',
   'panel.close': 'Kapat',
-  'panel.widgetsHint': 'Bir araca tıklayarak sayfana ekle. Düzenleme modunda sürükleyip boyutlandırabilirsin.',
+  'panel.widgetsHint': 'Bir araca tıklayarak ekle ya da sürükleyip sayfanda istediğin yere bırak. Düzenleme modunda taşıyıp boyutlandırabilirsin.',
   'panel.selectHint': 'Ayarlarını değiştirmek için düzenleme modunda bir araca tıkla.',
   'panel.appearance': 'Görünüm',
   'panel.reset': 'Varsayılana dön',
