@@ -143,24 +143,21 @@ type DesignState = DesignSnapshot & {
 export const uid = () => Math.random().toString(36).slice(2, 9)
 
 export const DEFAULT_DESIGN: DesignSnapshot = {
-  // Starting layout: fills exactly one screen (24 x 24) on desktop.
+  // Starting layout: one screen (24 x 24) with two empty spots (10 x 5 bottom middle,
+  // 8 x 9 bottom right) so new visitors have room to add their own widgets.
   widgets: [
     { id: 'lib', type: 'library', settings: {} },
     { id: 'disc', type: 'circle', settings: {} },
     { id: 'play', type: 'player', settings: {} },
-    { id: 'spec', type: 'bars', settings: {} },
     { id: 'clock', type: 'clock', settings: { size: 40, date: true } },
     { id: 'queue', type: 'queue', settings: {} },
-    { id: 'eq', type: 'equalizer', settings: {} },
   ],
   layout: [
     { i: 'lib', x: 0, y: 0, w: 6, h: 24 },
-    { i: 'disc', x: 6, y: 0, w: 12, h: 14 },
-    { i: 'play', x: 6, y: 14, w: 12, h: 6 },
-    { i: 'spec', x: 6, y: 20, w: 12, h: 4 },
-    { i: 'clock', x: 18, y: 0, w: 6, h: 4 },
-    { i: 'queue', x: 18, y: 4, w: 6, h: 10 },
-    { i: 'eq', x: 18, y: 14, w: 6, h: 10 },
+    { i: 'disc', x: 6, y: 0, w: 10, h: 13 },
+    { i: 'play', x: 6, y: 13, w: 10, h: 6 },
+    { i: 'clock', x: 16, y: 0, w: 8, h: 4 },
+    { i: 'queue', x: 16, y: 4, w: 8, h: 11 },
   ],
   theme: {
     accent: '#ededed',
@@ -190,7 +187,7 @@ export const DEFAULT_DESIGN: DesignSnapshot = {
   },
   effects: [],
   page: { screens: 1 },
-  mobileOrder: ['disc', 'play', 'lib', 'queue', 'eq', 'spec', 'clock'],
+  mobileOrder: ['disc', 'play', 'lib', 'queue', 'clock'],
 }
 
 const HISTORY_LIMIT = 100
