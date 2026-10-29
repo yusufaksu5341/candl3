@@ -7,6 +7,7 @@ export const fr: Dict = {
   'app.language': 'Langue',
   'app.undo': 'Annuler (Ctrl+Z)',
   'app.redo': 'Rétablir (Ctrl+Y)',
+  'app.support': 'Soutenir candl3 – Offre-moi un café',
 
   'panel.title': 'Crée ta page',
   'panel.close': 'Fermer',

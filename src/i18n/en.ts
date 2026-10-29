@@ -5,6 +5,7 @@ export const en = {
   'app.language': 'Language',
   'app.undo': 'Undo (Ctrl+Z)',
   'app.redo': 'Redo (Ctrl+Y)',
+  'app.support': 'Support candl3 – Buy me a coffee',
 
   'panel.title': 'Design your page',
   'panel.close': 'Close',

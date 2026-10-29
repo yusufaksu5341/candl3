@@ -7,6 +7,7 @@ export const tr: Dict = {
   'app.language': 'Dil',
   'app.undo': 'Geri al (Ctrl+Z)',
   'app.redo': 'İleri al (Ctrl+Y)',
+  'app.support': 'candl3’e destek ol – Bana bir kahve ısmarla',
 
   'panel.title': 'Sayfanı tasarla',
   'panel.close': 'Kapat',

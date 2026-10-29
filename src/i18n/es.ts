@@ -7,6 +7,7 @@ export const es: Dict = {
   'app.language': 'Idioma',
   'app.undo': 'Deshacer (Ctrl+Z)',
   'app.redo': 'Rehacer (Ctrl+Y)',
+  'app.support': 'Apoya candl3 – Invítame a un café',
 
   'panel.title': 'Diseña tu página',
   'panel.close': 'Cerrar',

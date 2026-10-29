@@ -7,6 +7,7 @@ export const de: Dict = {
   'app.language': 'Sprache',
   'app.undo': 'Rückgängig (Strg+Z)',
   'app.redo': 'Wiederholen (Strg+Y)',
+  'app.support': 'candl3 unterstützen – Spendier mir einen Kaffee',
 
   'panel.title': 'Gestalte deine Seite',
   'panel.close': 'Schließen',

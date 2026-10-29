@@ -53,6 +53,10 @@ button { cursor: pointer; }
 }
 .toolbar button:hover { border-color: rgba(var(--accent-rgb), .6); }
 .toolbar button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.toolbar .bmc { display: inline-flex; align-items: center; justify-content: center; height: 32px; border-radius: 999px; transition: transform .15s ease; }
+.toolbar .bmc:hover { transform: translateY(-1px); }
+.toolbar .bmc img { display: block; height: 32px; width: auto; }
+.toolbar .bmc svg { display: none; }
 
 /* ---------- board & widgets ---------- */
 .board { min-height: calc(100vh - 52px); overflow: hidden; }
@@ -303,6 +307,9 @@ body.no-shadow .widget.has-panel { box-shadow: none; }
   .toolbar .history .icon-btn { width: 36px; height: 38px; }
   .toolbar .lang { height: 38px; max-width: 92px; }
   .toolbar .lang select { width: 56px; text-overflow: ellipsis; }
+  .toolbar .bmc { width: 38px; height: 38px; background: #FFDD00; color: #000; }
+  .toolbar .bmc img { display: none; }
+  .toolbar .bmc svg { display: block; }
 
   .board-mobile { display: flex; flex-direction: column; padding: 8px 12px 16px; }
   .board-mobile.editing .widget { outline: 1px dashed rgba(var(--accent-rgb), .45); outline-offset: 2px; }
