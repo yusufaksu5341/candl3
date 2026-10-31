@@ -8,6 +8,7 @@ export const tr: Dict = {
   'app.undo': 'Geri al (Ctrl+Z)',
   'app.redo': 'İleri al (Ctrl+Y)',
   'app.support': 'candl3’e destek ol – Bana bir kahve ısmarla',
+  'app.saved': 'Bu cihazda kayıtlı',
 
   'panel.title': 'Sayfanı tasarla',
   'panel.close': 'Kapat',
@@ -191,7 +192,10 @@ export const tr: Dict = {
   'bg.beatZoom': 'Ritimle yakınlaş',
 
   'presets.hint': 'Hazır stiller renkleri, arka planı ve animasyonları değiştirir; araçların ve yerleşimin aynı kalır.',
-  'presets.save': 'Tasarımını kaydet',
+  'presets.save': 'Sayfanın tamamını yedekle',
+  'backup.info': 'Sayfan bu tarayıcıda otomatik olarak kaydedilir. Başka bir tarayıcıda veya cihazda da kullanmak için sayfanın tamamının (araçlar, yerleşim, görünüm) yedeğini dışa aktar ve orada içe aktar.',
+  'backup.export': 'Sayfa yedeğini dışa aktar',
+  'backup.import': 'Yedeği içe aktar',
   'presets.export': 'Dışa aktar',
   'presets.import': 'İçe aktar',
   'presets.reset': 'Sıfırla',

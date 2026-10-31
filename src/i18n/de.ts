@@ -8,6 +8,7 @@ export const de: Dict = {
   'app.undo': 'Rückgängig (Strg+Z)',
   'app.redo': 'Wiederholen (Strg+Y)',
   'app.support': 'candl3 unterstützen – Spendier mir einen Kaffee',
+  'app.saved': 'Auf diesem Gerät gespeichert',
 
   'panel.title': 'Gestalte deine Seite',
   'panel.close': 'Schließen',
@@ -191,7 +192,10 @@ export const de: Dict = {
   'bg.beatZoom': 'Im Takt zoomen',
 
   'presets.hint': 'Vorlagen ändern Farben, Hintergrund und Animationen; deine Widgets und ihre Anordnung bleiben gleich.',
-  'presets.save': 'Design speichern',
+  'presets.save': 'Ganze Seite sichern',
+  'backup.info': 'Deine Seite wird automatisch in diesem Browser gespeichert. Um sie in einem anderen Browser oder auf einem anderen Gerät zu nutzen, exportiere ein Backup der ganzen Seite (Widgets, Anordnung, Aussehen) und importiere es dort.',
+  'backup.export': 'Seiten-Backup exportieren',
+  'backup.import': 'Backup importieren',
   'presets.export': 'Exportieren',
   'presets.import': 'Importieren',
   'presets.reset': 'Zurücksetzen',

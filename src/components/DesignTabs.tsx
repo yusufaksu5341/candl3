@@ -4,11 +4,11 @@ import { COMMON_EFFECT_FIELDS, EFFECTS, effectDef, WIDGET_ANIMS } from '../effec
 import { useT } from '../i18n'
 import type { Field } from '../lib/fields'
 import { opts } from '../lib/fields'
+import { exportBackup, importBackup } from '../lib/backup'
 import { saveBlob } from '../lib/blobStore'
 import { FONTS, STYLE_PRESETS } from '../lib/presets'
-import { DEFAULT_DESIGN, snapshot, uid, useDesign } from '../store/design'
+import { DEFAULT_DESIGN, uid, useDesign } from '../store/design'
 import { usePlayer } from '../store/player'
-import type { DesignSnapshot } from '../store/design'
 import { BG_UPLOAD_KEY, BG_UPLOADED_EVENT } from './Backdrop'
 import FieldForm from './FieldForm'
 
@@ -144,35 +144,10 @@ export function EffectsTab() {
   )
 }
 
-function isSnapshot(v: unknown): v is DesignSnapshot {
-  const s = v as DesignSnapshot
-  return !!s && Array.isArray(s.widgets) && Array.isArray(s.layout) && typeof s.theme === 'object'
-}
-
 export function PresetsTab() {
   const t = useT()
   const { applySnapshot, applyStyle, resetLayout } = useDesign.getState()
   const file = useRef<HTMLInputElement>(null)
-
-  const exportJson = () => {
-    const blob = new Blob([JSON.stringify(snapshot(), null, 2)], { type: 'application/json' })
-    const a = document.createElement('a')
-    a.href = URL.createObjectURL(blob)
-    a.download = 'candl3-design.json'
-    a.click()
-    URL.revokeObjectURL(a.href)
-  }
-
-  const importJson = async (f?: File) => {
-    if (!f) return
-    try {
-      const data = JSON.parse(await f.text())
-      if (!isSnapshot(data)) throw new Error()
-      applySnapshot(data)
-    } catch {
-      alert(t('presets.invalid'))
-    }
-  }
 
   return (
     <div className="tab">
@@ -196,10 +171,11 @@ export function PresetsTab() {
         })}
       </div>
       <h4>{t('presets.save')}</h4>
+      <p className="muted small">{t('backup.info')}</p>
       <div className="btn-row" style={{ marginTop: 0 }}>
-        <button onClick={exportJson}><Download size={14} /> {t('presets.export')}</button>
+        <button onClick={exportBackup}><Download size={14} /> {t('presets.export')}</button>
         <button onClick={() => file.current?.click()}><Upload size={14} /> {t('presets.import')}</button>
-        <input ref={file} type="file" accept="application/json,.json" hidden onChange={(e) => { void importJson(e.target.files?.[0]); e.target.value = '' }} />
+        <input ref={file} type="file" accept="application/json,.json" hidden onChange={(e) => { void importBackup(e.target.files?.[0]); e.target.value = '' }} />
       </div>
       <h4>{t('presets.reset')}</h4>
       <div className="btn-row" style={{ marginTop: 0 }}>

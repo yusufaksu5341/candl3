@@ -6,6 +6,7 @@ export const en = {
   'app.undo': 'Undo (Ctrl+Z)',
   'app.redo': 'Redo (Ctrl+Y)',
   'app.support': 'Support candl3 – Buy me a coffee',
+  'app.saved': 'Saved on this device',
 
   'panel.title': 'Design your page',
   'panel.close': 'Close',
@@ -189,7 +190,10 @@ export const en = {
   'bg.beatZoom': 'Zoom with beat',
 
   'presets.hint': 'Presets change colors, background and animations; your widgets and layout stay the same.',
-  'presets.save': 'Save your design',
+  'presets.save': 'Back up your whole page',
+  'backup.info': 'Your page is saved automatically in this browser. To keep it on another browser or device, export a backup of the whole page (widgets, layout, look) and import it there.',
+  'backup.export': 'Export page backup',
+  'backup.import': 'Import backup',
   'presets.export': 'Export',
   'presets.import': 'Import',
   'presets.reset': 'Reset',

@@ -8,6 +8,7 @@ export const fr: Dict = {
   'app.undo': 'Annuler (Ctrl+Z)',
   'app.redo': 'Rétablir (Ctrl+Y)',
   'app.support': 'Soutenir candl3 – Offre-moi un café',
+  'app.saved': 'Enregistré sur cet appareil',
 
   'panel.title': 'Crée ta page',
   'panel.close': 'Fermer',
@@ -191,7 +192,10 @@ export const fr: Dict = {
   'bg.beatZoom': 'Zoom au rythme',
 
   'presets.hint': 'Les styles changent les couleurs, l’arrière-plan et les animations ; tes widgets et leur disposition restent les mêmes.',
-  'presets.save': 'Enregistre ton design',
+  'presets.save': 'Sauvegarde toute ta page',
+  'backup.info': 'Ta page est enregistrée automatiquement dans ce navigateur. Pour la retrouver sur un autre navigateur ou appareil, exporte une sauvegarde de toute la page (widgets, disposition, apparence) et importe-la là-bas.',
+  'backup.export': 'Exporter la sauvegarde de la page',
+  'backup.import': 'Importer une sauvegarde',
   'presets.export': 'Exporter',
   'presets.import': 'Importer',
   'presets.reset': 'Réinitialiser',
