@@ -43,7 +43,7 @@ function WidgetFrame({ w, mobile }: { w: WidgetInstance; mobile?: boolean }) {
         <ErrorBoundary><Comp id={w.id} settings={settings} /></ErrorBoundary>
       </div>
       {editMode && (
-        <div className="widget-tools no-drag">
+        <div className="widget-tools no-drag" onPointerDown={(e) => e.stopPropagation()}>
           <span className="widget-name">{t(`w.${def.type}`)}</span>
           {mobile && <button title={t('widget.up')} onClick={() => moveMobile(w.id, -1)}><ArrowUp size={14} /></button>}
           {mobile && <button title={t('widget.down')} onClick={() => moveMobile(w.id, 1)}><ArrowDown size={14} /></button>}
